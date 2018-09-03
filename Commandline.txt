@@ -1,0 +1,24 @@
+Command line
+
+cd- change directory 
+.. - move up 
+example: cd ../otherfolder 
+
+touch - make a new file/doc 
+example: touch filename
+
+mkdir - make new directory 
+example: mkdir directoryname 
+
+rmdir - remove directory (when its empty) 
+example- rmdir directoryname 
+
+rm -r - remove directory (when not empty) 
+example: rm -r directory name 
+
+mv <filename> <filename>- change name
+example: mv filename1 filename2 (can also overwrite files) 
+i.e. result would be filename2 (filename1 would be overwriten)
+
+cat - look inside a file 
+example: cat <filename> 

@@ -1,0 +1,32 @@
+Git 
+
+Working with Local Repository 
+
+git init- Initialize git repository
+
+git status - check if file is in stage of not (tracked or untracked) 
+
+git log - commit history 
+
+git show - show the full commit (HEAD) 
+
+git diff - difference of working copy and the staging (if any) 
+
+git commit -m "" - committing to the local directory 
+
+git branch- list current branches
+
+
+Working with Remote Repository 
+
+git clone <link> copyname
+
+git push "origin" "master" - pushing current branch to master branch 
+
+git fetch - retrieve origin/master from remote directory (update local master before working) 
+
+git pull "origin" "master" - pull up to date version of the "origin" to the "master" branch 
+
+git branch -a- list all branches INCLUDING remote branches 
+
+git branch push --delete <branchname> - delete branch in remote
