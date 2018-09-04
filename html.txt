@@ -1,0 +1,39 @@
+<!DOCTYPE html>- declare to the browser what type of file it is (must include)
+
+<html></html> - tag need after declaring html file 
+
+<a></a> - links to other pages
+example: <a href="link destination" target = "_blank" (new window)> </a>
+
+#idname = linking to an id in the same html page 
+example: <a href = "#idnameipicked" > <li>content<li> </a>
+
+./path = linking to a relative path within the same website (same file)
+example: <a href = "./pathname"> content </a>
+
+<p></p> - paragraph
+<div></div> - division
+<body></body> - where all content of the page goes 
+<head><head> - the header, starting point for all load
+<title></title> - title of the page- in the tab words
+<ul></ul> - unordered list - jot notes/list
+<ol><ol> - ordered list - numbered list
+<li></li> - list contents, goes into ul/ol
+<footer></footer> - bottom portion of the page - hold scripts usually 
+<h 1-6></h 1-6> - headers ranging in size from 1-6, 1 being the largest
+<!-- comment --> - making a comment in html 
+<img src="" alt=""
+<video src="" width=390 height=394 controls>content </video>- linking a video to the page
+
+Table ------
+<table border="1"> </table> -create a table | border puts border around, table number represents thickness- not always needed, can use css better
+(table consists of rows only-i.e. stacking rows to create columns)
+
+<thead></thead> -head of the table 
+<tbody></tbody> - body of the table 
+<tfoot></tfoot> - the footer/end of the table 
+<tr></tr> - table row 
+<th scope = "row or col"> </th> - table header | scope says if value it for a row or column
+
+<td> </td> - table data
+example: <td colspan or rowspan= "3"> value </td> - colspan/rowspan put the value in more than one column/row
