@@ -1,0 +1,15 @@
+!important -override any style no matter how specific it is
+example: 
+p {
+    color: blue !important;
+} - all p elements will appear blue (should be careful to use this)
+
+tag , tag {} - separate with tag pics both tag seperately- picks them as if they are unrelated  
+(without tags picks them together- thinking they are related)
+
+background-image: url - puts a background image on the screen based on an html tag (like any css attribute)
+example: 
+.class or p {
+    background-image: url(""); - this 
+}
+

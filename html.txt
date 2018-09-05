@@ -24,6 +24,7 @@ example: <a href = "./pathname"> content </a>
 <!-- comment --> - making a comment in html 
 <img src="" alt=""/>
 <video src="" width=390 height=394 controls>content </video>- linking a video to the page
+<br>- line break 
 
 Table ------
 <table border="1"> </table> -create a table | border puts border around, table number represents thickness- not always needed, can use css better
@@ -37,3 +38,14 @@ Table ------
 
 <td> </td> - table data
 example: <td colspan or rowspan= "3"> value </td> - colspan/rowspan put the value in more than one column/row
+
+FORMS ------
+<form> </form> - to put forms inside the body of the html <body></body>
+example: <form action="link ./action_page.php" target="_blank" > action usually for formed submited
+action- takes you to the page after form is submited
+
+<input> -self closing input elemnt in the form \
+example: <input type="password" name="password" > 
+type varies: password, ratio, username, submit,etc. 
+
+
