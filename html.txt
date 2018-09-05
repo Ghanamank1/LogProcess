@@ -22,7 +22,7 @@ example: <a href = "./pathname"> content </a>
 <footer></footer> - bottom portion of the page - hold scripts usually 
 <h 1-6></h 1-6> - headers ranging in size from 1-6, 1 being the largest
 <!-- comment --> - making a comment in html 
-<img src="" alt=""
+<img src="" alt=""/>
 <video src="" width=390 height=394 controls>content </video>- linking a video to the page
 
 Table ------
