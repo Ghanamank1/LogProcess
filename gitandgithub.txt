@@ -30,3 +30,7 @@ git pull "origin" "master" - pull up to date version of the "origin" to the "mas
 git branch -a- list all branches INCLUDING remote branches 
 
 git branch push --delete <branchname> - delete branch in remote
+
+curl -u "USER" https://api.github.com/user/repos -d '{"name":"REPO"}'- creating a github repository from commandline 
+
+git remote add origin git@github.com:USER/REPO.git - add a remote repo to the commandline to push as the new origin 
