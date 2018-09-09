@@ -1,0 +1,143 @@
+Variable-- 
+let - new method - for varaible that can change 
+const - new method - for variable that don'that
+disclaimer: variables hard coded are capitailized, if not- they are not
+example: const MY_BIRTHDAY = "etc."
+        const day_of_launch = "lol" 
+
+var - old way for declaring Variables
+`${}`- to insert anything into a string such as calculations
+
+\ - escapes charaters in a string 
+example: var big = 'I\'ve got a big mouth' (the \ next to the ' escapes it from becoming a string)
+
+Number()- function turns strings into numbers
+example: var numberString = "43453";
+         var  number = Number(numberString);
+         typeof number // "number"
+
+.toString() - function turns numbers into strings 
+example: var date = 1694;
+         var dateString = date.toString();
+         typeof dateString // "string" 
+
+.length - counts the length of a string
+example: "dsfnldsjfsdlsgjd".length; OR
+         var word = "ajksdnas";
+         var length = word.length;
+
+.indexOf()- locates the location of the first occurence of a specified text in a string 
+example:   indexOf("wordtolocate", 14) -14 is the starting point
+var str = "Please locate where 'locate' occurs!";
+var position = str.indexOf("locate"); // 7 - counts from 0 and the "l" starts at position 7
+
+.lastIndexOf()- returns the last occurence of a specified text in string
+
+.search()- searching a string for a specified value and returns the position 
+
+.slice()- slices out a portion of a string 
+example: var str = "apple, banana, kiwi";
+         var res = str.slice(7,13); // banana
+         var res = str.slice(-12,-6) // banana does samething- starts at the end because its negative
+         can also do just one way slice(7) or slice (-6) from the end
+
+.substr() - will slice like slice() but specifies the extracted part "subtracts"
+
+.replace() - replaces a specified value with another value in a string 
+example: str = "Please visit Microsoft!";
+var n = str.replace("Microsoft", "W3Schools");
+                    (/MICROSOFT/i, "W3Schools");- the //i is for case insensitive stuff 
+/microsoft/i - repleaces without case sensitivity
+/microsoft/g - replaces all matches - but its case sensitive still 
+/microsoft/gi - replaces all matches without case sensitivity (order of gi or ig doesn't matter)
+
+.toUpperCase()- changes a string to uppercase 
+
+.toLowerCase()- changes a string to lowerCase 
+
+.concat()- concatenates/ adds together two or more strings 
+example: 
+var text = "Hello" + " " + "World!"; 
+vat text = "Hello".concat(" ","World");
+BOTH DO THE SAME THING- CAN USE + or .concat
+
+.trim()- removes white space on both sides of a string;
+
+.substring() - extract a substring
+
+.charAt()- returns the character at a specified position in the string 
+example:
+var str = "hello"
+str.charAt(0); //returns H 
+
+.charCodeat() - returns the unicode of the character of a specified position/index in the string 
+
+.split() - makes a string an array (splits the word based on whatever is specified in the function)
+example: 
+txt.split(","); - splits with the commas
+txt.split(""); - splits with no space between
+txt.split(" "); - splits with the space between
+        var word = aosdnasldj
+        var txt = word.split("") - splits with no space 
+        alert(txt[0]) // a  
+
+.eval() - evaluate the input
+
+.value() - determine the value of whatever its attached to 
+
+.splice (x,x,value)- can insert values into arrays 
+first 2 days what position in array
+second says how many values should be removed and
+last value is the string/value inserting (Can be as many as you want)
+can be used to remove values from the string and position which  .splice(x,x)
+
+ternary operator- just for simpler if true run this, if not, do this
+example:
+( condition ) ? run this code : run this code instead
+var greeting = ( isBirthday ) ? 'Happy birthday Mrs. Smith' : 'Good morning Mrs. Smith.';
+
+
+switch statement - similar to if statement but if cases that are more than expected and less complex
+example:  
+        switch (expression) {
+        case choice1:
+            run this code
+            break;
+
+        case choice2:
+            run this code instead
+            break;
+            
+        // include as many cases as you like
+
+        default:
+            actually, just run this code
+        }
+POSTFIX/PREFIX
+
+++i - increase i and returns the NEW value of i. which would be i+1
+i++ - increase i and returns the OLD value of i. which would be just i .
+example: i= 0 
+++i- would return 1 - NEW 
+1++- returns 0 - OLD!
+
+
+LOOPS---- 
+
+for (initializer; exit-condition; final-expression) {
+  // code to run
+} - to run a for loop 
+
+initializer
+while (exit-condition) {
+  // code to run
+
+  final-expression
+} - to run a while loop
+
+initializer
+do {
+  // code to run
+
+  final-expression
+} while (exit-condition)- running a do..while loop
