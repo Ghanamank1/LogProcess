@@ -1,0 +1,149 @@
+Strings 
+    "string" + "name" - concatenation'
+    vs 
+    "string" << "name" 
+    first creates a new string 
+    secong changes the original strings into one. 
+    should consider this for memory stuff. db
+
+    "string #{name}" - interpolation 
+    puts "string" - command puts (unknown)
+    puts- put string command 
+    gets- get string command (retrieves what you type up)
+
+    .chomp - take away the enters when i use gets
+
+    .match(argument, starting point)- lets you find what your looking for
+    and where to start the search, in the second argument
+
+    .upcase - capitalizing everything 
+    .downcase - lower casing everything 
+    .swapcase - switch lower and caps to the other
+    .capitalize - capitalize the first character, if its a letter 
+    puts("string").center(lineWidth) - centers the string in the line with specified 
+    
+    .ljust/.rjust - shift it to the right of left in the line width (line microsoft word)
+    example:
+        puts string.ljust(lineWidth)
+        or 
+        puts string.rjust lineWidth
+
+    "\n" - this is the line break 
+        NOTE: '\n' - this print \n to the user
+
+Symbols 
+    : - starts with the colon
+
+Repeating instructions (loops in javascript)
+        5.times do 
+            putes "hello, world!"
+        end
+    same loops javascript 
+        for (var i = 0; i < 5; i++) {
+            console.log("hello,world!");
+        }
+Blocks
+
+    block of code to be use again else where- like a function is javascript
+    starts with do and ends with end (do/end style)
+    example: 
+    6.times do 
+        puts "hello, world!"
+        end  
+        AND (for single instructions)
+    6.times{ puts "hello, world!" }
+
+Arrays  
+    adding to an array - push() in javascript
+        meals = ["breakfast", "lunch", "dinner"]
+    adding to the array - << = shovel operator
+        meals << "dessert" 
+        result meals = ["breakfast", "lunch", "dinner", "dessert"]
+    show the indexed array 
+        meals[2]
+        result => "dinner"
+    show the last array 
+        meals.last 
+        => "dessert" 
+    .sort - sorts the array in alphabetical or neumerical order. 
+
+    .each- iterates through each method
+
+    .index- find the address of a specific element 
+
+    .include? - asks the array if its in the array 
+
+    .shuffle - shuffles the array 
+
+    .first /.last - retrieves last and first indexed 
+
+    .push - pushes a new value to the end of the array
+
+    .pop - removes the last value from the array
+
+    .map { |i| i+5} - adds for to every element in the array
+
+    .select { |whatever| parameter to pass} 
+        - filter out the elements based on the parameter passed
+
+    .delete "thing" - deletes an element
+
+    .delete_if { |i| "condition"}
+    
+Hashes 
+    it names and give each value a number 
+    example: 
+    produce = {"apples" => 3, "oranges" => 1, "carrots" => 12}
+    puts "There are #{produce['oranges']} oranges in the fridge." 
+    result there are 1 oranges in the fridge. 
+        - it displays the value of the indexed variable
+    
+    .keys - calls/shows the keys
+    .values - displays/shows the values in the 'array'/Hash
+
+    rand - returns random number (rand(number)- returns random number)
+    note - rand(100)- returns number from 0 to 99- always less than the number placed. 
+            rand(1)- always brings back 0
+ 
+ Branching 
+    basically the if else statements for ruby
+        if
+        else 
+        elsif
+        end 
+
+    the while loop - use "BREAK"! to stop the loop! if infiniteir
+        while
+        end 
+
+    unless somthing
+    do somthing  
+    end 
+
+    Ternary - ? and : - then and else 
+    condition "?" then this happens ":" else this happen
+
+    loop do
+        something
+        break - to stop it 
+    end
+
+    for i in array
+        something
+    end 
+    
+Objects 
+    .methods - shows methods that can be applied to any Objects
+        i.e. everything is an object so it can be done everything
+            example: 1.methods - show all of the method
+                    [].methods - shows them all as well
+            .methods.sort can be used! 
+
+CLASSES     
+    class "Classname" 
+
+        def "methodName"
+            @instance-variable name
+        end 
+    end
+

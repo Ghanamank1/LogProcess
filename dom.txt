@@ -1,0 +1,81 @@
+element.querySelector(selector)- select a query which is like selecting a class(class=name) or even an element (<p>) 
+        example: element.querySelector(.class);
+                element.querySelector(#id);
+
+element.querySelectorAll(selectors)- select all -RETURNS NODE LIST
+        NOTE: need to turn nodelist into an array! array.from() can do that. 
+
+document.createElement(element)- create element to be stored in the DOM i.e. <div>/ ('div')
+        note: does not add it to the page, that would need appending 
+            full- document.createElement(tagName[, options]) 
+
+parentNode.appendChild(childNode)- add/appends appends childnode as the last child of the parentNode
+        note: puts it at the end 
+
+parentNode.insertBefore(newNode, referenceNode)- inserts newNode into parentNode before referenceNode
+        note: basically get to pick where you want it! because of the reference! 
+
+parentNode.removeChild(child) - removes child from parentNode on the DOM and returns reference to child
+
+.style.cssText - lets you put multiple lines of code 
+        example: div.style.cssText = 'color: blue; background: white'; 'background-color: green'; 
+                - as long as ; is there, you can put as many as you want. should probably do it in css page though. 
+
+.setAttribute(type, name)- sets attribute or updates whats already there
+        note: div.setAttribute('id', 'theDiv'); - sets the new id and calls it the name                             
+        // if id exists update it to 'theDiv' else create an id
+        // with value "theDiv"
+
+.getAttribute(type) - asks what the attribute is called
+        div.getAttribute('id');                                        
+        // returns value of specified attribute, in this case
+        // "theDiv"
+
+.remoteAttribute()- removes the attribute mentioned. 
+        div.removeAttribute('id');                                     
+        // removes specified attribute         
+
+.classList.add(name)- adds new class name in an attribute/ element i.e. <div>
+        div.classList.add('new');                                      
+        // adds class "new" to your new div
+
+.classList.remove(name)- removes class from element/attribute 
+        div.classList.remove('new');                                   
+        // remove "new" class from div
+
+.classList.toggle(name)- if its there, remove it. if not add it. 
+        div.classList.toggle('active');                                
+        // if div doesn't have class "active" then add it, or if
+        // it does, then remove it
+
+ADDING TEXTS
+
+.textContent = 'WHATEVER YOU WANT - ADDING TEXT!
+        div.textContent = 'Hello World!'                               
+        // creates a text node containing "Hello World!" and
+        // inserts it in div
+
+.innerHTML = 'whatever you want' - adding text to the inner html like <p></p>
+        div.innerHTML = '<span>Hello World!</span>';                   
+        // renders the html inside div
+
+EVENTS
+
+.addEventListener()- adding event listener- which can listen to multiple events!! 
+        // the html file
+        <button id="btn">Click Me Too</button>
+        // the JavaScript file
+        var btn = document.querySelector('#btn');
+        btn.addEventListener('click', () => {
+        alert("Hello World");
+        });
+
+.onclick - tie an element to a particular event- would have to write multiple for others 
+        // the html file
+        <button id="btn">Click Me</button>
+        // the JavaScript file
+        var btn = document.querySelector('#btn');
+        btn.onclick = () => alert("Hello World");
+
+onclick= inserted directly into the HTML which is not ideal, easy to change and just ew. 
+        <button onclick="alert('Hello World')">Click Me</button>
