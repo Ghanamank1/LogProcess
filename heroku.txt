@@ -1,0 +1,26 @@
+Command ===== explanation 
+
+heroku --version -   check 
+
+heroku login - log into heroku 
+
+heroku keys:add - add ssh keys
+
+heroku create - creating new application at heroku (will be empty)
+
+git push heroku master - pushing the master branch into heroku to be deployed online
+
+
+NOTE: 
+To deploy into heroku, the database of the production 
+must be in postgresql (because thats what heroky uses)
+
+must have a way of connecting to heroku (the keys)
+
+must login, then create app and then push 
+
+THEN BAM! - FULLY DEPLOYED TO THE WEB!
+
+https://devcenter.heroku.com - source for all commands
+
+i.e. custom domain names - for efua and other things "like list"
