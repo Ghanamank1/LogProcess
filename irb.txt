@@ -11,10 +11,25 @@ Strings
     puts- put string command 
     gets- get string command (retrieves what you type up)
 
+    %{string} => "string" - creates a string
+
     .chomp - take away the enters when i use gets
 
+    .flatten - turns nested arrays and hashes(nest/not nested) into a single array! 
+        example: [[1,2,3],[4,5,6]].flatten 
+            is => [1,2,3,4,5,6]
+                {this: 1, that: 4}.flatten
+            is => [:this, 1, :that, 4]
+
+    .none? {|n| n} - if the block returns false then will return true
+        example: [1].none? - false /because there's something
+                 [1].none? {|n| n.nil?} 
+                    is => true  /because n.nil? returns false  
+    
     .match(argument, starting point)- lets you find what your looking for
     and where to start the search, in the second argument
+    
+    .strip - removes all whitespace/ spacing from a string
 
     .upcase - capitalizing everything 
     .downcase - lower casing everything 
@@ -31,8 +46,11 @@ Strings
     "\n" - this is the line break 
         NOTE: '\n' - this print \n to the user
 
+    \t - tab
+
 Symbols 
     : - starts with the colon
+        example:  :symbols
 
 Repeating instructions (loops in javascript)
         5.times do 
@@ -46,12 +64,43 @@ Blocks
 
     block of code to be use again else where- like a function is javascript
     starts with do and ends with end (do/end style)
+    THE BLOCK IS THATS IN do..end or {} 
+    its passed to the .times method in the example below
     example: 
     6.times do 
         puts "hello, world!"
         end  
         AND (for single instructions)
     6.times{ puts "hello, world!" }
+
+PROC 
+    Proc.new- create new Proc
+    example: 
+        new_proc = Proc.new { block of code!}
+        array = [1,4,5,6]
+        array.collect(&new_proc) 
+        - then it does that! 
+        NOTE: 
+            must use & to pass the proc in as a Block
+            can use symbols like &:to_i if needed
+            without having to create the proc! 
+
+LAMBDA 
+    lambda - creates a lambda
+        example: 
+         new_lambda = lambda { block of code!}
+         array = [1,3,4,5]
+         array.collect(&new_lambda)
+
+        NOTE: 
+            its basically the same as a Proc with minor difs
+                it checks the arguments to make sure they exist
+                gives error if they dont and proc givs nil
+
+                when its called in a method it goes through the entire thing
+                with proc it stops at the proc and returns that value 
+            returns to calling method - lambda
+            rather than returning immediately - proc
 
 Arrays  
     adding to an array - push() in javascript
@@ -81,15 +130,80 @@ Arrays
 
     .pop - removes the last value from the array
 
+    .slice- cuts array at certain points 
+        e.g. slice(1,4)
+            start cut are index 1 and cuts after 4 indexes 
+        i.e. slice(start cut index, cut after this index)
+
+    .split('') 
+        i.e. can split on anything 
+        e.g. text.split(/\.|\?|!/)
+            splits on period, question mark and exclamation point
+
+    .shift - remove from front of array 
+
+    .unshift - add to the front of array
+
     .map { |i| i+5} - adds for to every element in the array
 
     .select { |whatever| parameter to pass} 
         - filter out the elements based on the parameter passed
 
+    .each_key - picks only the keys when filtering Hashes
+
+    .each_value - picks only the values when filtering value
+
     .delete "thing" - deletes an element
 
     .delete_if { |i| "condition"}
     
+    .each_with_index { |value, index| condition} - captures the index and the value in the index!!!
+    useful!
+
+    .any?{|a| a[0]=="a"} - searches the elements if condition true
+
+    .all?{|a| a[0]== "a"} - search ALL element for condition
+
+    .inject(0) {|total,item| total+item}- goes through and adds up entire array or Hashes
+        0 is initial value
+
+    .grep () - returns what matches the criteria given
+            > names.grep(/J/)
+        => ["James", "Joe", "Jim"]
+
+    .max - max value of an array
+
+    .min - minimun value of an array!
+
+    .reject - removes what is if the code block from the new form array
+        e.g. array.reject {|n| n.nil?}
+            removes all the elements that are nil for array!
+
+    .transpose - puts related indexes of nested arrays together
+        example: [[1,2,3],[4,5,6],[7,8,9]].transpose
+            result: [[1,4,7],[2,5,8],[3,6,9]]
+                takes the same inner indexes and puts into array
+
+    %w{a b c d e} => ["a", "b", "c", "d", "e"]
+
+    (number).chr - symbols including letters! on ascii table! useful!
+        
+    <=> - compares to things to see which is larger: 
+        i.e. left>right = 1 | left < right = -1 | left = right = 0
+
+    ||= - conditional assignment operator 
+        example: a ||= b
+                means a || a = b
+                - if a is false/nil then a = b 
+
+    ARGV - takes in parameter, to be processed by the file code
+        e.g. ruby analyze.rb oliver.txt 
+            - the ARGV would intake the oliver file then process it 
+            with the analyze.rb code 
+            NOTE: analyze.rb would have ARGV[0] or ARGV.first 
+                to intake the file
+                for some reason :/
+
 Hashes 
     it names and give each value a number 
     example: 
@@ -120,6 +234,10 @@ Hashes
     do somthing  
     end 
 
+    until i = 50 - just keeping doing it until 1= 50. 
+        do something
+    end 
+
     Ternary - ? and : - then and else 
     condition "?" then this happens ":" else this happen
 
@@ -127,10 +245,20 @@ Hashes
         something
         break - to stop it 
     end
+        example: loop do 
+                    i = i+1
+                    puts #{i}
+                    break if i<=0
+                 end - will print it out and break if condition met.
 
     for i in array
         something
     end 
+        example: for i in 1..10 - include 10
+                 end 
+                for i in 1...10 - exclude 10/ last number  
+                end
+
     
 Objects 
     .methods - shows methods that can be applied to any Objects
@@ -139,7 +267,49 @@ Objects
                     [].methods - shows them all as well
             .methods.sort can be used! 
 
-CLASSES     
+METHODS 
+    def nameofmethod argument argument2 
+        code to run when called
+    end
+    brackets are optional
+
+    SELF (self) used inside methods for the caller!
+        example: array.method - array= caller!
+        array would be inserted into the self location
+
+    YIELD (yield) - takes a block into a method!
+
+    METHOD ARGUMENTS
+    def nameofmethod argument *argument2- meaning can accepted one or more!!
+    def nameofmethod argument argument2=default - setting a default for the argument so that it doesnt need to be inputted 
+
+
+    CLASS METHOD
+        def Classname.methodName
+            @@class_variable
+        end - to call a class variable we use a class method
+
+
+    attr_reader 
+    attr_writer
+    attr_accessor- makes both READER and WRITER attribute!
+        a reader method is just a method in a class that access some information
+        its to read the information
+            e.g. def name  
+                    @name
+                 end
+        this is a READER method lets you read whats in it when called
+
+        a writer variable lets you change the method argument in it
+        e.g. def name=(argument)
+                @name = argument
+             end
+        the WRITER method, lets you write a new argument in the method!
+
+CLASSES  
+    private - private methods inside the classes not accessible outside
+    protected - lets methods inside the class access it/provides most of private 
+    public - all methods by default are public 
     class "Classname" 
 
         def "methodName"
@@ -147,3 +317,456 @@ CLASSES
         end 
     end
 
+    NESTED CLASSES
+        class Drawing
+            class Line; end    
+            class Circle; end
+
+            def self.create_circle
+                Circle.new
+            end
+        end
+        a = Drawing::Line.new - to call the nested!!!
+            OR 
+        a = Drawing.create_circle
+            USING CLASS METHOD TO CALL NESTED   
+    
+    STRUCT CLASS   
+        - struct can leave out vars while normal way can't
+    ClassName = Struct.new(:varname1, :varname2)
+        ClassName = Struct.new(name, location)- assigning to them
+        similar: 
+
+            class NameOfClass 
+                attr_accessor :varname1, :varname2
+
+                def initialize(name)
+                @varname1 = name 
+                @varname2 = location
+                end 
+            end
+
+MODULE 
+    module NameOfModule -stores code to retrieve
+    end
+
+    NameOfModule.methodName - calling a method inside the module!
+
+    Module::WhatIWAnt- looks inside the Module for the code i WhatIWAnt
+
+    require 'moduleName'- using a module - over everything
+
+    require_relative 'filename' - for files in current directory
+
+    load 'filename.rb' - load entire file 
+
+    include 'moduleName'- include module's methods inside of a class
+
+    extend 'moduleName' - extends the the methods on a class 
+        e.g. Time.now 
+            the Time class extends and uses the now method!
+
+    CONSTANT = "something" - puting a constant variable in module!
+
+VARIABLES 
+    $-global variable
+    @ - instance variable 
+    @@ - class variable 
+    
+
+MORE INFO 
+        $: - is a variable where ruby stores that require searches for included files
+            example: 
+                $:.each {|d| puts d}
+                    - will list all the included files to search for
+                    $: is an array! 
+
+Ruby Documentation -rdoc
+    rdoc filename.rb - command to generate Documentation
+        it produces an html csss for the code
+        NOTE: must document with comments in code to work! 
+
+    :nodoc: - to leave out a specific method, etc.
+
+    :nodoc: all - to leave out an entire class, module etc..
+
+    --
+    ++ - exclude particular paragraph commented 
+
+ERROR HANDLING- Exception class!
+    - to "rescue" errors if they occur 
+    begin
+        puts 10/0
+    rescue
+        puts "You caused an error!"
+    end
+
+    NOTE: code after "rescue" can now be used to continue 
+            if error occurs.
+            this time ZeroDivisionError message did not happen
+            "rescue" the program from completely stopping
+
+        example: another scenario to handle specific errors/exceptions!
+
+        begin
+        ... code here ...
+        rescue ZeroDivisionError
+        ... code to rescue the zero division exception here ...
+        rescue YourOwnException
+        ... code to rescue a different type of exception here ...
+        rescue
+        ... code that rescues all other types of exception here ...
+        end 
+
+    begin/rescue/else/ensure! - more indepth error/exception handle
+        begin 
+            a+b - execute code
+        rescue 
+            puts recue command if error/exception happens
+        else 
+            if theres no error, then carry on
+        ensure 
+            run this, if theres error or not!
+        end 
+    
+    retry statement - running code again from begin
+        begin
+            a+back
+        rescue 
+            - what to do if error happens
+            if retries > 0
+                try it again 
+            else 
+                move on or something else 
+            end
+        else 
+            if theres no error, then carry on
+        ensure 
+            run this, if theres error or not!
+        end 
+
+        MAKING YOUR OWN Exception
+            raise- statment to make an exception
+
+CATCH AND THROW
+    catch throw with a :finish keyword
+        -where no error has occured but escape needs to occur!
+   
+    catch(:finish) do
+        1000.times do
+        x = rand(1000)
+        throw :finish if x == 123
+        end
+        puts "Generated 1000 random numbers without generating 123!"
+    end 
+
+BENCHMARKING
+    -measures how long it takes to complete a task! 
+    comparing those results between different versions of code
+
+PROFILING
+    -tells you what code is taking what amount of time
+    gem install ruby-prof
+        -gem used to profile
+
+FILE class
+
+    r - read only (pointer at begining i.e. 0)
+    r+ - read and write (0)
+
+    w - write only (can overwrite file or make new)
+    w+ - read and write
+
+    a - write (eof- pointer starts end of file) - add to file
+    a+ - read and write (eof)
+
+    b- binary mode 
+
+
+    .gets - prints out the input 
+        NOTE: can be passed a DELIMITER 
+            i.e. .gets(',')
+            -meaning print out from the , commas 
+        NOTE: also takes a character limit
+            i.e. .gets(1000) 
+            - shows the 1000 characters of that line!
+    
+    .getc - prints out the first character of the input
+
+    .rename - rename any file 
+        e.g. File.rename("file.txt", "file3.txt")
+
+    .delete - delete any file(s) or directory
+        e.g. File.delete("file", "file2", "file3)
+
+    .seek(-7, IO::SEEK_END)- pointer at 7 away from the end of file 
+
+    .mtime - files out the last time file was modified 
+        -File.mtime("filepath")
+
+    .exist? - checks if file exists or not
+        -File.exist?("filepath")
+
+    .eof? - checks if you're at the end of file "eof"
+
+    puts - prints out the input/ rewrite the input
+
+    putc - prints out the first character/ rewrites the first character
+
+    READING FILES 
+
+    .read - puts the entire file into a single string
+        NOTE: accepts parameter 
+            i.e. .read(6) - prints out only 6 characters in the entire file
+    
+    .readline - reads a single line
+
+    .readlines - puts the entire file into an array line by line
+        NOTE: accepts parameter as well!
+            i.e. .readlines(6) - prints 6 characters of all lines!
+                take 6 characters of all lines part by part  
+
+    .each_byte {|byte|} - access file on a byte level 
+
+    File.open("filepath")- this opens a file
+        e.g. text file
+
+    OR 
+
+    File.new("filename", "r").each {|lines| puts lines}
+        -when using new methods its good to specify what the file 
+        will be used for: "r" in this case means opening it for "reading
+
+    File.open("filepath").each {|lines| puts lines}
+        - puts each line of the file to the command line
+        - can use each as if its an array
+
+        DELIMITER 
+        File.open("filepath").each(",") {|line| puts lines}
+            NOTE: with the open you can change the DELIMITER
+                *the end point to print the code
+
+    File.readlines("filepath)
+        - insert each line into an array 
+        - if this is puts, it looks the same as the file
+        - but when inspected it is in an array
+
+    POSITION
+
+    .pos - get the file position!
+        e.g. f=file.open("filepath")
+            f.pos 
+                => 5 - position of the pointer!
+        NOTE: can pic the position in a file with 
+            .pos = 9 
+            - picking the position the pointer should start at!
+
+    .seek(-7, IO::SEEK_END) - takes pointer to 7 points from the end of file(eof)
+        - best way to get to the end of file immediately
+
+    WRITING FILES 
+
+    .write - can write into a file 
+    
+    File.open('filename', 'w') do |f| f.puts "put this in the file" end
+            - writes to the file
+        NOTE: 'w' - tell ruby write only, compare to 'r' for read only
+
+
+    File.join(':c', 'path')- create file path depending on the system
+        => :c/path or :c\path
+        File.join (File::SEPARATOR, ':c', 'path')
+        -create an absolute path
+
+    File.expand_path('text.txt') - turn basic file name into complate paths
+        => /Users/peter/text.txt
+        - referecences current working directory
+
+DIRECTORY (ruby style)
+
+    Dir class
+
+    Dir::pwd - printing working directory/ current directory
+
+    Dir.chdir('dirpath')- changing directory to 'dirpath'
+        i.e. /usr/bin
+
+    Dir.foreach('filedir') do |entry| puts entry end
+        - prints out the folders/files in a directory
+
+    Dir.entries('filedie') 
+        - makes an array of all the file/folders in a directory
+
+    Dir.mkdir - making a new directory
+        i.e. Dir.mkdir('dirname')
+            - can also put path to make new directory
+
+    Dir.tmpdir - create temporary directory
+        require 'tmpdir' - making the temporary directory available
+            You can use Dir.tmpdir with File.join to create a platform-independent way of creating a temporary file:
+            require 'tmpdir'
+            tempfilename = File.join(Dir.tmpdir, "myapp.dat")
+            tempfile = File.new(tempfilename, "w")
+            tempfile.puts "This is only temporary"
+            tempfile.close
+            File.delete(tempfilename)
+
+            This code creates a temporary file, writes data to it, and deletes it.
+            Ruby’s standard library also includes a library called tempfile that can create temporary files for you:
+            require 'tempfile'
+            f = Tempfile.new('myapp')
+            f.puts "Hello"
+            puts f.path
+            f.close 
+
+DATABASES 
+    basic DATABASES
+
+    .find - searching the data for a single value that match the entry
+       i.e.  .find {|person| person[0] =~ /laura/}
+
+    .find_all - searching the data for all values that match the entry
+        i.e.  .find_all {|person| person[0].between?(a,z)}
+
+    CSV - COMMA SEPARATED VALUES
+
+        basic csv looks like so: 
+            fred,manager,male,34
+            julie,CEO,female,55
+            debbie,bum,female,20
+            -they are separated by commas and broken into lines
+
+    require 'csv'- to use Ruby’s standard library for csv files
+
+    CSV.open('filename).each {|person| p person}
+        -make arrays of each line of the csv file
+            e.g. ['fred', 'manager', 'male', '34']
+                 ['julie', 'CEO', 'female', '55']
+        
+    CSV.read('file.txt)- creates array of arrays of the csv data
+        -parses the csv data like CSV.parse
+
+    OR 
+
+    CSV.parse- turns the data into array of arrays (for ease of use)
+        e.g. CSV.parse(File.read('file.txt'))
+        creates array of arrays of all the csv data in the file
+
+    
+    putting the new values in the csv file 
+        NOTE: it overwriting the previous file because of 'w'
+        look at testcsv.rb to see how it works in detail
+
+        require 'csv'
+        people = CSV.read('text.txt')
+        laura = people.find { |person| person[0] =~ /Laura/ }
+            laura[0] = "Lauren Smith"
+                CSV.open('text.txt', 'w') do |csv|
+                people.each do |person|
+                csv << person
+            end
+        end 
+
+    PSTORE - STORAGE (Objects and data structures)
+
+        storing data for CSV files has to be in nested arrays (1 level nesting)
+        i.e. 
+        person = [["Fred Bloggs", "Manager", "Male", "45"],
+                 ["Lauren Smith", "Cook", "Female", "23"], 
+                 ["Debbie Watts", "Professor", "Female", "38 "]] 
+
+
+        PSTORE-stores objects 
+        fred = Struct.new(:name, :age)
+        laura = Struct.new(:name, :age)
+
+        fred.name = 'Fred Bloggs'
+        laura.name = 'Laura Smith'
+
+            require 'pstore'
+            store = PStore.new("storagefile")
+            store.transaction do
+                store[:people] ||= Array.new
+                store[:people] << fred
+                store[:people] << laura
+            end 
+        -stores objects of fred and laura within a hash in the PStore
+
+    YAML - put later
+
+
+    SQLITE3 -  RELATIONAL DATABASES AND SQL
+        sql - structured query language 
+
+        require 'sqlite3' - using the sqlite3 data base
+
+        creating a table- 
+            - can create as much as one wishes 
+                CREATE TABLE table_name (
+                column_name data_type options,
+                column_name data_type options,
+                ...,
+                ...
+                );
+            e.g. CREATE TABLE people (
+                    id integer primary key,
+                    name varchar(50),
+                    job varchar(50),
+                    gender varchar(6),
+                    age integer); 
+
+        varchar(integer) - string column with a 'integer' character limit
+                e.g. varchar(50) - 50 character limit
+
+        primary key - primary referecence to each row and the id must be unique
+
+        insert info into database - 
+            - INSERT INTO table_name (column, column) VALUES (value, value);
+
+            e.g. INSERT INTO people (name, age, gender, job) VALUES ("Chris Scott", 25, "Male", "Technician"); 
+            
+        selecting info in database- 
+            SELECT column_name FROM table_name;
+            SELECT column_name FROM table_name WHERE column_name = value
+                    -choosing based on colomn name alone
+                    -choosing based on value and column name
+
+            e.g. SELECT * FROM person;
+                    OR 
+                SELECT * FROM person WHERE id = 2;
+                SELECT name FROM person WHERE age = 25;
+                SELECT * FROM person WHERE age >= 20 AND age <= 40; 
+
+                NOTE * selects all 
+
+        order selected database info- 
+            SELECT column_name FROM table_name ORDER BY value DESC/ASC
+            (DESC - descending order)
+            (ASC - ascending order)
+            (LIMIT 5 - limits how many of data'5' is return in query/'ask')
+            (AND - and command for SQL)
+
+            e.g. SELECT * FROM person ORDER BY name DESC;
+                 SELECT age FROM person ORDER BY age age;
+                 SELECT * FROM people ORDER BY name DESC LIMIT 5; 
+ 
+        delete rows of data - 
+            DELETE FROM table_name WHERE column_name='value';
+            (LIMIT 5= limits how many of the data is deleted'5')
+
+            e.g. DELETE FROM people WHERE name="Chris"; 
+                 DELETE FROM people WHERE age > 100;
+                 DELETE FROM people WHERE gender = "Male" AND age < 50; 
+                 DELETE FROM people WHERE age > 100 LIMIT 10; 
+
+        updating the data info- 
+            UPDATE table_name SET column_name = 'value' WHERE column = 'value';
+
+            e.g. 
+            UPDATE person SET name = 'Christopher' WHERE name = 'Chris';
+            UPDATE people SET name = "Christopher", age = 44 WHERE name = "Chris"; 
+            UPDATE people SET name = "Christopher" WHERE name = "Chris" AND age = 25; 
+
+            NOTE: Multiple columns allowed to be updated
+
+        

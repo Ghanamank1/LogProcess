@@ -7,6 +7,21 @@ git init- Initialize git repository
 git status - check if file is in stage of not (tracked or untracked) 
 
 git log - commit history 
+    
+    git log --oneline : lists the commits in condensed one liners
+    git log --stat: list the details of which line were removed/added
+    git log --author= <author details> - search commits of a person
+    git log <filename> - search the commits of a particular file
+    got log <since>..<until> - displays specific log period
+        combination: compares master with another feature with ..
+    git log --oneline master..some-feature
+    git log -S"code i'm looking for!" --pretty=format:'%h %an %ad %s'
+        -acts as a blame using gitlog for the code specified
+
+git blame -logs all commands that can be used with blame
+
+    git blame <filename> - details of who made changes to each line of code
+    NOTE: use git blame command to get details of commands!
 
 git show - show the full commit (HEAD) 
 
@@ -16,12 +31,20 @@ git commit -m "" - committing to the local directory
 
 git branch- list current branches
 
+git config --global alias.<alias-name> <git-command> - short cuts!
+
+    git config --global- used for user specific settings
+
+    git config --global core.editor vim/editorname- picking an editor
+
+git unstage - to unstage an add  
+
 
 Working with Remote Repository 
 
 git clone <link> copyname
 
-git push "origin" "master" - pushing current branch to master branch 
+git push "origin" "master" - pushing master to origin branch 
 
 git fetch - retrieve origin/master from remote directory (update local master before working) 
 
@@ -33,4 +56,6 @@ git branch push --delete <branchname> - delete branch in remote
 
 curl -u "USER" https://api.github.com/user/repos -d '{"name":"REPO"}'- creating a github repository from commandline 
 
-git remote add origin git@github.com:USER/REPO.git - add a remote repo to the commandline to push as the new origin 
+git remote add origin git@github.com:USER/REPO.git - add a remote repo on commandline to push as the new origin 
+
+git remote -v - checks the source where code if fetched or pushed
