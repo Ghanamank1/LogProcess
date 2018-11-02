@@ -21,7 +21,7 @@ Working with Remote Repository
 
 git clone <link> copyname
 
-git push "origin" "master" - pushing current branch to master branch 
+git push "origin" "master" - pushing master to origin branch 
 
 git fetch - retrieve origin/master from remote directory (update local master before working) 
 
@@ -34,3 +34,5 @@ git branch push --delete <branchname> - delete branch in remote
 curl -u "USER" https://api.github.com/user/repos -d '{"name":"REPO"}'- creating a github repository from commandline 
 
 git remote add origin git@github.com:USER/REPO.git - add a remote repo to the commandline to push as the new origin 
+
+git remote -v - checks the source where code if fetched or pushed
