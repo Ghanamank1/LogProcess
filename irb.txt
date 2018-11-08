@@ -152,8 +152,12 @@ Arrays
 
     .unshift - add to the front of array
 
+<<<<<<< HEAD
     .map { |i| i+5} - adds number to every element in the array
         - makes it a new array
+=======
+    .map { |i| i+5} - adds for to every element in the array
+>>>>>>> b0cc8ccdee8aa4124888c611487ae2f2aca91fdd
 
     .select { |whatever| parameter to pass} 
         - filter out the elements based on the parameter passed
@@ -583,6 +587,7 @@ FILE class
 
 
     File.join(':c', 'path')- create file path depending on the system
+<<<<<<< HEAD
             -stored inside a constant File::SEPARATOR that turnns it into a path
         => :c/path or :c\path
         File.join (File::SEPARATOR, ':c', 'path')
@@ -592,6 +597,13 @@ FILE class
         -create an absolute path
 
     File.expand_path('text.txt') - turn basic file name into complete paths
+=======
+        => :c/path or :c\path
+        File.join (File::SEPARATOR, ':c', 'path')
+        -create an absolute path
+
+    File.expand_path('text.txt') - turn basic file name into complate paths
+>>>>>>> b0cc8ccdee8aa4124888c611487ae2f2aca91fdd
         => /Users/peter/text.txt
         - referecences current working directory
 
@@ -680,6 +692,7 @@ DATABASES
             end
         end 
 
+<<<<<<< HEAD
             RUBY CSV PARAMETERS 
         CSV.open('filepath', headers: true, header_converters :symbol)
             - the second and third paremeters add additional functionality
@@ -687,6 +700,8 @@ DATABASES
             NOTE: headers are define and then converted in to symbols 
 
 
+=======
+>>>>>>> b0cc8ccdee8aa4124888c611487ae2f2aca91fdd
     PSTORE - STORAGE (Objects and data structures)
 
         storing data for CSV files has to be in nested arrays (1 level nesting)
