@@ -1,6 +1,6 @@
 Git 
 
-Working with Local Repository 
+{Working with Local Repository} 
 
 git init- Initialize git repository
 
@@ -26,8 +26,10 @@ git blame -logs all commands that can be used with blame
 git show - show the full commit (HEAD) 
 
 git diff - difference of working copy and the staging (if any) 
+    git diff --staged : difference bettween whats been staged
 
 git commit -m "" - committing to the local directory 
+    git commit --amend : change the commit message of last commit
 
 git branch- list current branches
 
@@ -37,10 +39,67 @@ git config --global alias.<alias-name> <git-command> - short cuts!
 
     git config --global core.editor vim/editorname- picking an editor
 
-git unstage - to unstage an add  
+git add - to stage 
+    git add -p - stage in parts
+        n for ignore, s for split into hunks, y is yes, etc. useful!
+
+    [ Commands that can UNDO: reset,revert,checkout ]
+git reset <filename> - to unstage an add 
+git reset --hard sha - removes commit from history as if never happen
+    NOTE: SHOULD BE CAREFUL TO USE THIS
+
+git clean - removes changes in working directory from previous add
+
+git checkout - used to move in git
+    git checkout <branch name> - move to a branch of choise
+    git checkout sha(7) - move to previous commit
+
+git revert HEAD - use to 'invert'/undo the last commit
+    NOTE: IT KEEPS HISTORY OF THE REVERTED COMMIT UNLIKE RESET
+
+    [storing for later use] stashing 
+git stash - saves staged and unstaged work 
+git stash -u : stashes untracked files as well (normal doesn't)
+git stash -a : stashes ignored, untracked and tracked files 
+git stash save 'text for description): annotated stashes
+git stash -p - stashes part of a file or more
+            (basically everything stashed)
+git stash pop - reapplys stashed work (pops the bubble open)
+    git stash pop stash@(1)- specify which stash to pop!
+        (normal pop pops the most recently stashes)
+git stash apply - reapplys but keeps changes in stash (good for reuse)
+git stash list - allows you to view all your stashes (can stash many)
+git stash show - show summary of stash 
+    git stash show -p : shows full diff of stash
+git stash drop stash@(1): remove particular stash
+git stash clear - deletes all stashes 
+git stash branch <name> stash@(1)- poping the stash into another branch
+
+    [Incorporating changes] Merge or Rebase
+git merge master feature : to merge master into feature branch
+    same:       git checkout feature  - to move to feature
+        then-   git merge master - to merge master into feature
+    OR 
+git rebase master/branch
+    git rebase -i master : interactive rebase
+        NOTE: rebase can rewrite history for good or bad 
+        reasearch on altassain.com/odin again before using it
+
+    [MERGE CONFLICT RESOLUTION] rebase! DANGEROUS (PRIVATE REPOS ONLY)
+            1. git push origin master/other - gives conflict 
+2. git pull --rebase origin master : pull from origin into master branch
+    NOTE: PUSHS THE LOCAL infront of the origin/master
+        this allows for conflicts to be resolves one at a time
+        not all at once like if i just used git pull 
+3. git status - to see the details of the first conflict 
+4. git add - after resolving the conflict
+5. git rebase --continue - to continue to the next conflict (if any)
+    NOTE: Thsi process is repeated until resolved fully
+6. git push origin master - finally push it into the origin/master
+    7. git rebase --abort - if you wish to stop the process!
 
 
-Working with Remote Repository 
+{Working with Remote Repository} 
 
 git clone <link> copyname
 
@@ -59,3 +118,7 @@ curl -u "USER" https://api.github.com/user/repos -d '{"name":"REPO"}'- creating 
 git remote add origin git@github.com:USER/REPO.git - add a remote repo on commandline to push as the new origin 
 
 git remote -v - checks the source where code if fetched or pushed
+
+git remote rm <name> to remove the connection to a remote repo 
+
+git remote rename <oldname> <newname>

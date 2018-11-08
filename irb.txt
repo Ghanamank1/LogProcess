@@ -42,6 +42,12 @@ Strings
         puts string.ljust(lineWidth)
         or 
         puts string.rjust lineWidth
+            e.g. rjust and ljust move over the string 
+                    and can replace the space with values.
+                i.e. "string".rjust(5,"49")
+                    => "string49494" 
+                    - move it over and replace the space with 49!
+                    NOTE: words for ljust as well!
 
     "\n" - this is the line break 
         NOTE: '\n' - this print \n to the user
@@ -126,6 +132,8 @@ Arrays
 
     .first /.last - retrieves last and first indexed 
 
+    .sum - sums up the value of all element in the array
+
     .push - pushes a new value to the end of the array
 
     .pop - removes the last value from the array
@@ -144,7 +152,8 @@ Arrays
 
     .unshift - add to the front of array
 
-    .map { |i| i+5} - adds for to every element in the array
+    .map { |i| i+5} - adds number to every element in the array
+        - makes it a new array
 
     .select { |whatever| parameter to pass} 
         - filter out the elements based on the parameter passed
@@ -574,11 +583,15 @@ FILE class
 
 
     File.join(':c', 'path')- create file path depending on the system
+            -stored inside a constant File::SEPARATOR that turnns it into a path
         => :c/path or :c\path
         File.join (File::SEPARATOR, ':c', 'path')
+        e.g.
+        File.join(File::SEPARATOR , 'full', 'path', 'here', 'filename.txt') 
+        => /full/path/here/filename.txt 
         -create an absolute path
 
-    File.expand_path('text.txt') - turn basic file name into complate paths
+    File.expand_path('text.txt') - turn basic file name into complete paths
         => /Users/peter/text.txt
         - referecences current working directory
 
@@ -666,6 +679,13 @@ DATABASES
                 csv << person
             end
         end 
+
+            RUBY CSV PARAMETERS 
+        CSV.open('filepath', headers: true, header_converters :symbol)
+            - the second and third paremeters add additional functionality
+
+            NOTE: headers are define and then converted in to symbols 
+
 
     PSTORE - STORAGE (Objects and data structures)
 
@@ -769,4 +789,56 @@ DATABASES
 
             NOTE: Multiple columns allowed to be updated
 
+TEMPLATING (ERB)
+
+    -rubys TEMPLATING language ERB
+    <%= %> - used to output results to the template
+    <% %> - does not output results 
         
+    binding - methods that returns special object (an instance)
+        - returns an instance of the erb template 
+            based on the code in the erb file
+            NOTE: needed to execute the erb code!
+            e.g.
+            template = ERB.new inputfile/erb template
+
+            result = template.result(binding)
+            puts result 
+                - this puts out the erb code for the inputted file!
+                - as you can see binding is needed to get the results
+
+RSPEC - ruby testing frameword
+
+    rspec --init : initiate the rspec system 
+        creates two file 
+            spec_helper.rb - configurations for rspec 
+            .rpec - reads all the commandline configurations
+
+    RSpec.describe - used to characterize the class and its function
+    
+    it - used to test the methods within a class 
+
+    describe - used to test methods within a class
+
+    expect - to run the methods 
+
+    eql - examine the output
+
+    {} - used in expect statement to check Error raised 
+
+    .to - for positive expectations
+
+    .not_to/to_not - for negative expectations
+
+        LIMIT ONE EXPECTATION FOR A TEST case
+
+    e.g. of basic syntax
+
+        RSpec.describe Calculator do
+            describe "#add" do
+                it "returns the sum of two numbers" do
+                    calculator = Calculator.new
+                    expect(calculator.add(5, 2)).to eql(7)
+                end
+            end
+        end
