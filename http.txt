@@ -1,0 +1,77 @@
+Hypertext Transfer Protocol
+
+details- https://code.tutsplus.com/tutorials/http-the-protocol-every-web-developer-must-know-part-1--net-31177
+
+Status code 
+    200s - successful
+    300s - redirection
+    400s - Client Error
+    500s - Server Error
+
+both REQUEST and RESPONSE have these headers 
+
+General Headers = 
+               | Cache-Control            
+               | Connection        
+               | Date              - timestamp request/reponses
+               | Pragma            - custom header 
+               | Trailer           
+               | Transfer-Encoding - break smaller pieces Transfer-Encoding: chunked
+               | Upgrade           
+               | Via                - used to trace messages             
+               | Warning
+
+both REQUEST and RESPONSE have these headers
+-prodives meta information 
+
+entity-header  = 
+               | Allow    
+                   -content prefix tells info about message body               
+               | Content-Encoding  
+               | Content-Language  
+               | Content-Length    
+               | Content-Location  
+               | Content-MD5       
+               | Content-Range     
+               | Content-Type      
+               | Expires          - when expires 
+               | Last-Modified    - timestamp of last modification
+
+only REQUEST have these Headers
+
+request-header = 
+                    - acceptable media types, languages and character sets 
+               | Accept             
+               | Accept-Charset    
+               | Accept-Encoding   
+               | Accept-Language   
+               | Authorization     
+               | Expect            
+                    - details about client that initiated request
+               | From              
+               | Host   
+               | User-Agent
+               | Referer            
+                    - makes confidion with timestamp or Etag           
+               | If-Match          
+               | If-Modified-Since 
+               | If-None-Match     
+               | If-Range          
+               | If-Unmodified-Since
+               | Max-Forwards       
+               | Proxy-Authorization
+               | Range              
+               | TE    
+
+only RESPONSE have these headers 
+
+response-header = 
+               | Accept-Ranges
+               | Age               -time since message was generated on server (in seconds)
+               | ETag              - MD5 hash or entity used to check modifications
+               | Location          - used when sending redirection, contians new url
+               | Proxy-Authenticate
+               | Retry-After       
+               | Server            - identifies the server generating message
+               | Vary              
+               | WWW-Authenticate           

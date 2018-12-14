@@ -1,5 +1,7 @@
 Command ===== explanation 
 
+heroku open - open heroku app
+
 heroku --version -   check 
 
 heroku login - log into heroku 
@@ -13,7 +15,7 @@ git push heroku master - pushing the master branch into heroku to be deployed on
 
 NOTE: 
 To deploy into heroku, the database of the production 
-must be in postgresql (because thats what heroky uses)
+must be in postgresql (because thats what heroku uses)
 
 must have a way of connecting to heroku (the keys)
 

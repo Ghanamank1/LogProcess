@@ -49,3 +49,10 @@ Binary Tree Traversal
         - LDR - Inorder
         - RLD - Postorder
 
+
+{Micellaneous thoughts}
+
+within any numerical algorithm usual method is to initialize 
+e.g. n= 0 or i =0 
+    this gives a starting point, which is also refered to initializing
+

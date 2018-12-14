@@ -1,4 +1,4 @@
-Strings 
+{Strings} 
     "string" + "name" - concatenation'
     vs 
     "string" << "name" 
@@ -54,7 +54,7 @@ Strings
 
     \t - tab
 
-Symbols 
+{Symbols} 
     : - starts with the colon
         example:  :symbols
 
@@ -66,7 +66,7 @@ Repeating instructions (loops in javascript)
         for (var i = 0; i < 5; i++) {
             console.log("hello,world!");
         }
-Blocks
+{Blocks}
 
     block of code to be use again else where- like a function is javascript
     starts with do and ends with end (do/end style)
@@ -79,7 +79,7 @@ Blocks
         AND (for single instructions)
     6.times{ puts "hello, world!" }
 
-PROC 
+{PROC} 
     Proc.new- create new Proc
     example: 
         new_proc = Proc.new { block of code!}
@@ -91,7 +91,7 @@ PROC
             can use symbols like &:to_i if needed
             without having to create the proc! 
 
-LAMBDA 
+{LAMBDA} 
     lambda - creates a lambda
         example: 
          new_lambda = lambda { block of code!}
@@ -108,7 +108,7 @@ LAMBDA
             returns to calling method - lambda
             rather than returning immediately - proc
 
-Arrays  
+{Arrays}  
     adding to an array - push() in javascript
         meals = ["breakfast", "lunch", "dinner"]
     adding to the array - << = shovel operator
@@ -152,12 +152,8 @@ Arrays
 
     .unshift - add to the front of array
 
-<<<<<<< HEAD
     .map { |i| i+5} - adds number to every element in the array
         - makes it a new array
-=======
-    .map { |i| i+5} - adds for to every element in the array
->>>>>>> b0cc8ccdee8aa4124888c611487ae2f2aca91fdd
 
     .select { |whatever| parameter to pass} 
         - filter out the elements based on the parameter passed
@@ -217,7 +213,7 @@ Arrays
                 to intake the file
                 for some reason :/
 
-Hashes 
+{Hashes}
     it names and give each value a number 
     example: 
     produce = {"apples" => 3, "oranges" => 1, "carrots" => 12}
@@ -273,14 +269,14 @@ Hashes
                 end
 
     
-Objects 
+{Objects} 
     .methods - shows methods that can be applied to any Objects
         i.e. everything is an object so it can be done everything
             example: 1.methods - show all of the method
                     [].methods - shows them all as well
             .methods.sort can be used! 
 
-METHODS 
+{METHODS} 
     def nameofmethod argument argument2 
         code to run when called
     end
@@ -319,7 +315,7 @@ METHODS
              end
         the WRITER method, lets you write a new argument in the method!
 
-CLASSES  
+{CLASSES}  
     private - private methods inside the classes not accessible outside
     protected - lets methods inside the class access it/provides most of private 
     public - all methods by default are public 
@@ -359,7 +355,7 @@ CLASSES
                 end 
             end
 
-MODULE 
+{MODULE} 
     module NameOfModule -stores code to retrieve
     end
 
@@ -381,20 +377,20 @@ MODULE
 
     CONSTANT = "something" - puting a constant variable in module!
 
-VARIABLES 
+{VARIABLES} 
     $-global variable
     @ - instance variable 
     @@ - class variable 
     
 
-MORE INFO 
+{MORE INFO} 
         $: - is a variable where ruby stores that require searches for included files
             example: 
                 $:.each {|d| puts d}
                     - will list all the included files to search for
                     $: is an array! 
 
-Ruby Documentation -rdoc
+{Ruby Documentation} -rdoc
     rdoc filename.rb - command to generate Documentation
         it produces an html csss for the code
         NOTE: must document with comments in code to work! 
@@ -406,7 +402,7 @@ Ruby Documentation -rdoc
     --
     ++ - exclude particular paragraph commented 
 
-ERROR HANDLING- Exception class!
+{ERROR HANDLING}- Exception class!
     - to "rescue" errors if they occur 
     begin
         puts 10/0
@@ -461,7 +457,7 @@ ERROR HANDLING- Exception class!
         MAKING YOUR OWN Exception
             raise- statment to make an exception
 
-CATCH AND THROW
+{CATCH AND THROW}
     catch throw with a :finish keyword
         -where no error has occured but escape needs to occur!
    
@@ -473,16 +469,16 @@ CATCH AND THROW
         puts "Generated 1000 random numbers without generating 123!"
     end 
 
-BENCHMARKING
+{BENCHMARKING}
     -measures how long it takes to complete a task! 
     comparing those results between different versions of code
 
-PROFILING
+{PROFILING}
     -tells you what code is taking what amount of time
     gem install ruby-prof
         -gem used to profile
 
-FILE class
+{FILE class}
 
     r - read only (pointer at begining i.e. 0)
     r+ - read and write (0)
@@ -587,7 +583,6 @@ FILE class
 
 
     File.join(':c', 'path')- create file path depending on the system
-<<<<<<< HEAD
             -stored inside a constant File::SEPARATOR that turnns it into a path
         => :c/path or :c\path
         File.join (File::SEPARATOR, ':c', 'path')
@@ -597,17 +592,10 @@ FILE class
         -create an absolute path
 
     File.expand_path('text.txt') - turn basic file name into complete paths
-=======
-        => :c/path or :c\path
-        File.join (File::SEPARATOR, ':c', 'path')
-        -create an absolute path
-
-    File.expand_path('text.txt') - turn basic file name into complate paths
->>>>>>> b0cc8ccdee8aa4124888c611487ae2f2aca91fdd
         => /Users/peter/text.txt
         - referecences current working directory
 
-DIRECTORY (ruby style)
+{DIRECTORY} (ruby style)
 
     Dir class
 
@@ -644,7 +632,7 @@ DIRECTORY (ruby style)
             puts f.path
             f.close 
 
-DATABASES 
+{DATABASES} 
     basic DATABASES
 
     .find - searching the data for a single value that match the entry
@@ -692,7 +680,6 @@ DATABASES
             end
         end 
 
-<<<<<<< HEAD
             RUBY CSV PARAMETERS 
         CSV.open('filepath', headers: true, header_converters :symbol)
             - the second and third paremeters add additional functionality
@@ -700,8 +687,6 @@ DATABASES
             NOTE: headers are define and then converted in to symbols 
 
 
-=======
->>>>>>> b0cc8ccdee8aa4124888c611487ae2f2aca91fdd
     PSTORE - STORAGE (Objects and data structures)
 
         storing data for CSV files has to be in nested arrays (1 level nesting)
@@ -738,7 +723,7 @@ DATABASES
         creating a table- 
             - can create as much as one wishes 
                 CREATE TABLE table_name (
-                column_name data_type options,
+                column_name data_type CONSTRAINT DEFAULT,
                 column_name data_type options,
                 ...,
                 ...
@@ -803,8 +788,162 @@ DATABASES
             UPDATE people SET name = "Christopher" WHERE name = "Chris" AND age = 25; 
 
             NOTE: Multiple columns allowed to be updated
+        
+        aggregate function - sql
+            - sums up a column of values 
+            SELECT SUM(column_name) FROM table_namey
+            can also use GROUP BY row_name to determine sub based on row
 
-TEMPLATING (ERB)
+        BASIC SQL - most RELATIONAL DATABASE resource management systems 
+
+                STATEMENTS - 
+
+                    SELECT 
+                        SELECT * FROM table_name;
+                    
+                    CREATE TABLE
+                        CREATE TABLE table_name (
+                            column_name DATATYPE constraint DEFAULT
+                            name VARCHAR(50) DEFAULT 'john', 
+                            date DATE,
+                            price NUMBER(9)
+                        );
+
+                    ALTER TABLE (CHANGES TO COLUMNS OT TABLE)
+                        ALTER TABLE table_name
+                        ADD column_name DATATYPE constraint 
+                            DEFAULT default_value;
+                            
+                        ALTER TABLE table_name
+                        DROP column_name_to_be_deleted;
+
+                        ALTER TABLE table_name
+                        RENAME TO new_table_name;
+
+                    DROP TABLE 
+                        DROP TABLE table_name; - whole table delete
+                    
+                    UPDATE
+                        UPDATE table_name 
+                        SET column_name = 'value',
+                            name = 'John',
+                            number = 4163230842
+                        WHERE constraint
+                    
+                    DELETE  - deletes rows 
+                        DELETE FROM table_name
+                        WHERE name = 'john' AND id = 1;- delete row 1
+
+                    INSERT INTO
+                        INSERT INTO table_name (id, name, address)
+                        VALUES (1, 'frank', '52 seedland');
+
+                    CREATE DATABASE - creates database
+
+                    DROP DATABASE - deletes a database
+
+                            to look up
+                                CREATE INDEX - sorts table ahead of time 
+
+                                DROP INDEX - 
+                                
+                                COMMIT (concept)
+                                
+                                ROLLBACK (concept)
+
+                CLAUSES
+
+                    DISTINCT
+                        SELECT DISTINCT column_name FROM table_name;
+                        SELECT DISTINCT item FROM items_ordered;
+                        - removes duplicates
+
+                    WHERE
+                        SELECT column_name FROM table_name
+                        WHERE contraint;
+
+                    IN
+                        SELECT column_name FROM table_name
+                        WHERE column_name IN ('value', 'value', 'value');
+                                same as:
+                        SELECT column_name FROM table_name
+                        WHERE column_name = 'value' OR column_name = 'value';
+                    
+                    AND
+                        SELECT column_name FROM table_name
+                        WHERE column_name = 'value' AND column_name = 'value1';
+
+                    OR
+                        SELECT column_name FROM table_name
+                        WHERE column_name = 'value' OR column_name = 'value';
+                    
+                    BETWEEN
+                        SELECT column_name FROM table_name
+                        WHERE column_name BETWEEN value AND value1;
+
+                        WHERE age BETWEEN 10 AND 50;
+
+                    LIKE
+                        SELECT column_name FROM table_name
+                        WHERE column_name LIKE 'D%' OR 'D_';
+
+                    ORDER BY
+                        SELECT column_name FROM table_name
+                        WHERE column_name ORDER BY column_name ASC|DESC;
+
+                    COUNT
+                        SELECT COUNT(column_name) FROM table_name;
+
+                FUNCTIONS 
+
+                    GROUP BY
+                        SELECT column_name FROM table_name
+                        WHERE constraint GROUP BY constraint;
+
+                        SELECT job, age FROM employees
+                        WHERE age > 30 GROUP BY job;
+                        
+                    HAVING
+                        SELECT column_name FROM table_name
+                        WHERE constraint GROUP BY constraint
+                        HAVING constraint;
+
+                        SELECT job, age FROM employees
+                        WHERE age > 30 GROUP BY job
+                        HAVING name LIKE 'D%';
+
+                    AVG
+                        SELECT AVE(column_name) FROM table_name;
+                        SELECT AVG(age) FROM employees;
+
+                    COUNT
+                        SELECT COUNT(column_name) FROM table_name;
+
+                    MIN
+                        SELECT MIN(column_name) FROM table_name;
+                        SELECT MIN(age) FROM employees;
+
+                    MAX
+                        SELECT MAX(column_name) FROM table_name;
+                        SELECT MAX(age) FROM employees;
+                        
+                    SUM
+                        SELECT SUM(age) FROM table_name;
+                        SELECT SUM(age) FROM employees;
+                    
+                    ALL 
+                        SELECT column_name FROM table_name
+                        WHERE value > ALL (
+                            SELECT column_name FROM table_name WHERE column_name = value
+                        );
+                        
+                        SELECT name FROM world 
+                        WHERE gdp > ALL ( 
+                            SELECT gdp FROM world WHERE continent = 'Europe'
+                        );
+                        
+
+{TEMPLATING} (ERB)
 
     -rubys TEMPLATING language ERB
     <%= %> - used to output results to the template
@@ -822,7 +961,7 @@ TEMPLATING (ERB)
                 - this puts out the erb code for the inputted file!
                 - as you can see binding is needed to get the results
 
-RSPEC - ruby testing frameword
+{RSPEC} - ruby testing frameword
 
     rspec --init : initiate the rspec system 
         creates two file 
@@ -838,6 +977,10 @@ RSPEC - ruby testing frameword
     expect - to run the methods 
 
     eql - examine the output
+
+    before - runs code before a test
+        - before.all : runs before all test
+        - before:each runs before each test 
 
     {} - used in expect statement to check Error raised 
 
@@ -857,3 +1000,31 @@ RSPEC - ruby testing frameword
                 end
             end
         end
+
+    EXAMPLE CODE 
+
+    describe Burger do
+        describe "#apply_ketchup" do
+            context "with ketchup" do
+                before do
+                    @burger = Burger.new(:ketchup => true)
+                    @burger.apply_ketchup
+                end
+
+                it "sets the ketchup flag to true" do
+                    @burger.has_ketchup_on_it?.should be_true
+                end
+            end
+
+            context "without ketchup" do
+                before do
+                    @burger = Burger.new(:ketchup => false)
+                    @burger.apply_ketchup
+                end
+
+                it "sets the ketchup flag to false" do
+                    @burger.has_ketchup_on_it?.should be_false
+                end
+            end
+        end
+    end
