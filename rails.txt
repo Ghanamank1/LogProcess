@@ -1,0 +1,712 @@
+{GENERATING}
+
+        (to generate a model or controller)
+    rails generate
+        - rails generate controller ControllerName  method1 method2
+                e.g. rails generate controller StaticPages home help
+        - rails generate model ModelName colname:datatype colname:datatype
+                e.g. rails generate model User name:string email:string 
+        
+        (to reverse generated model or controller)
+    rails destroy 
+        - rails destroy controller ControllerName method1 method2
+                e.g. rails destroy controller StaticPages home help
+        -rails destroy model ModelName
+                e.g. rails destroy User 
+                    NOTE: ONLY model can omit arguments
+
+{DATABASE MIGRATIONS}
+
+        (migrating model info to database)
+    rails db:migrate 
+        - migrating to database
+
+        (to undo a single migration)
+    rails db:rollback
+        - i think the most recent migration will be undone
+
+        (to rollback to the beginning)
+    rails db:rollback VERSION=0    
+        - to undo all migrations to the database 
+        - TOTAL RESET 
+        NOTE: putting 1,2,etc in VERSION migrates to that VERSION
+
+{RAILS SERVER}
+
+        (opening multiple rails app locally)
+    rails server -p 3001
+        - opens up a rails server on a different port!
+        i.e. rails http://localhost:3001
+
+{ROUTING}
+
+    helper methods
+        - automatically generated and correspond to route names
+        e.g. edit_post_path(3) => edit_post_path(:id)
+            :id is in the params hash 
+
+    _path VS _url
+
+        _path 
+            - generates JUST the path portion
+            e.g. /post/3/edit
+
+        _url 
+            - generates WHOLE url 
+            e.g. lazzyreader.com:80/post/3/edit
+
+    root route
+        root to: "kittens#index" 
+            OR 
+        root 'kittens#index'
+        -directs to KITTENS controller and INDEX action
+
+    RESTful routes 
+        7 FUNDAMENTAL routes
+        index - GET
+        show  - GET
+        edit  - GET
+        update- PUT
+        new   - GET
+        create- POST
+        destroy- DELETE
+    
+    MUST have ALL to follow RESTful 
+            mandatory for each resource 
+        get    "/posts",          to: "posts#index"
+        get    "/posts/:id",      to: "posts#show"
+        get    "/posts/new",      to: "posts#new"
+        post   "/posts",          to: "posts#create"  # usually a submitted form
+        get    "/posts/:id/edit", to: "posts#edit"
+        put    "/posts/:id",      to: "posts#update" # usually a submitted form
+        delete "/posts/:id",      to: "posts#destroy"
+
+            OR 
+        resources :posts
+            -creates the 7 routes for post in application
+        ( LITERALLY MAKES ALL 7 ABOVE WITH ONE METHOD )
+        
+        ^ 5 paths and helpers
+        /posts           posts_path
+        /posts/:id       post_path(:id)
+        /posts/new       new_post_path
+        /posts/:id/edit  edit_post_path(:id)
+
+        resources :ControllerName
+                i.e.   resources :posts
+
+                resources :posts, only: [:index, :show]
+                    or 
+                resources :posts, except: [:index]
+
+                    - to pick which requests out of the 7
+                        only or omitance/except
+            
+        singular resources
+         ^are plural resources
+
+         resource :photo VS resources :photos
+
+         ^ creates 
+            /photo/new    new_photo_path
+            /photo/edit   edit_photo_path
+            /photo        edit_photo_path
+
+            NOTE: no id paths, since theres only 1
+
+    Name Spaces 
+        - a way to route to special paths 
+            NOTE: like admin articles 
+        e.g. 
+            namespace :admin do
+                resources :articles, :comment
+            end
+            (several ways of writing this: search up if needed)
+        creates Admin::ArticlesController
+            -admin module makes a
+
+            /admin    -infront of the 5 paths
+                i.e. /admin/articles      GET
+                     /admin/article/new   GET 
+                      ..etc
+        MUST put under
+            app/controllers/admin   directory
+    
+    Nested resources
+            -creates a relational path
+                so to get ad, must have magazine path
+        resources :magazines do 
+            resources :ads 
+        end
+
+        creates such as 
+        GET     /magazines/:magazine_id/ads         ads#index
+                  helper: magazine_ads_path
+        GET     /magazine/:magazine_id/ads/new      ads#new
+                  helper: new_magazine_ad_path
+        POST    /magazine/:magazine_id/ads          ads#create
+                  helper: magazine_ad_path
+        GET     /magazine/:magazine_id/ads/:id/edit ads#edit
+                  helper: edit_magazine_ad_path
+        etc... 
+            NOTE: all links will have /magazine infront
+            because of relational relationship
+                i.e. 
+                # each magazine has it own ads
+                # and an ad MUST belong to a magazine
+                class Magazine < ApplicationRecord
+                    has_many :ads
+                end
+                
+                class Ad < ApplicationRecord
+                    belongs_to :magazine
+                end
+
+    ADD member routes, collection routes
+        {MEMBER}
+        - adding another route to the usual rest routes
+         i.e. index,show,edit,update,delete,new,create
+
+        resources :photos do
+            member do
+                get 'preview'
+            end
+        end
+            - adds this path to photos routes
+            i.e. /photos/1/preview
+                NOTE: only apply with get requests to preview
+                (can add other request types to new member)
+            # AND must add preview action to PhotoController
+        
+        {COLLECTION}
+        - adding another routes to the usual rest toute
+        but without having it linked to specific id
+
+        resources :photos do
+            collection do
+                get 'search'
+            end
+        end
+            -adds this path to photos routes
+            i.e. /photos/search
+                NOTE: applies to get request
+                -routes to search action of PhotoController
+            
+    Shallow Nesting ***should figure out why********
+            would need multiple parameters for paths
+            e.g. article_comment_path(@article, @comment)
+                    or 
+                 url_for([@article, @comment])
+                 -this gets the specific comment for the article
+        
+        BASICALLY!
+
+        1.  INSTEAD OF: 
+                resources :articles do
+                    resources :comments
+                end 
+
+        2.  ITS DOING: 
+                resources :articles do
+                    resources :comments, only: [:index, :new, :create]
+                end
+                resources :comments, only: [:show, :edit, :update, :destroy]
+            
+        3.  SUM IT UP INTO:
+                resources :articles do
+                        resources :comments, shallow: true
+                end
+                    OR 
+                shallow do
+                    resources :article do
+                        resources :comments
+                    end
+                end
+            (does the same thing as 2!)
+        why?      
+            only nests the the parts that identify the 
+            relationship between the 2 resources!
+                    heh?
+            show is linked to index, create and new
+            edit is linked to create,and new
+            update is linked to create,and new
+            destroy is linked to create, and new
+
+    Segments (static, dynamic, bound)
+        - different paths! styles
+        
+        Static Segment
+            get 'photos/:id/with_user/:user_id', to: 'photo#show'
+        with_user: is static Segment
+
+        Dynamic Segment
+            get 'photos/:id/:user_id, to 'photo#show'
+        :id && :user_id: are dynamic Segments, they change
+
+        Bound Segment
+            get 'photos(/:id)', to: :display
+        (/:id): is bound, its option  
+        
+        Query string
+            # everything after '?' in the url
+            get 'photos/:id', to: 'photo#show'
+                works with:
+                /photos/1?user_id=2
+            Query is user_id=2
+            similar to: /photo/:id/:user_id
+                       /photo/1/2
+
+    Defaults 
+        -setting defaults in the routes
+
+        get 'photo/:id', to: photos#show', defaults: { format: 'jpg' }
+        # setting photos that display to users to jpg
+
+        # setting default for a resource
+        defaults format: :json do
+            resources :photos
+        end
+
+        CANT DO       #format defaults
+        /photos/1?format='json'
+            security purposes NOT ALLOW TO override 
+        CAN DO        #dynamic segments 
+        /photos/1?user_id=2 
+            OR
+        /photos/1?id=1
+
+            FORMAT REQUEST OPTIONS
+        get 'pages', to: 'pages#show', format: false
+            #format not mandatory
+        get 'pages', to: 'pages#show', format: true
+            #format is mandatory
+
+    CONSTRAINTS 
+        go back to ruby guide to read up on it again
+            guides.rubyonrails.org 
+        1. Segment contrainsts 3.8
+        2. Request-Based Contraints 3.9
+        3. Advanced Constraints 3.10 
+    
+    REDIRECTING
+        go back to ruby guide to read up on it again
+        (Its not that big of a thing it seems)
+
+    Globbing and Wildcard Segments
+        Globbing VS Wildcard
+            # basically the same thing, just 
+            # on is at the end and other in 
+            # all over i.e. middle, front, etc.
+            
+            Globbing
+        get 'photos/*other', to: 'photos#unknown'
+            - the * on the other allows path to match: 
+            /photos/12 or /photos/long/path/to/12
+            params[:other] = "12"
+                OR
+            params[:other] = 'long/path/to/12'
+
+            Wildcard
+        get 'books/*section/:title', to: 'books#show'
+            -matches:
+            /books/some/section/last-words-a-memoir
+            params[:section] = 'some/section'
+            params[:title] = 'last-words-a-memoir'
+
+    Custom routes
+
+        get '/somepath', to: 'somecontroller#someaction
+            -pick the path and controller of ones choice
+
+stopped 3.13 
+
+{CONTROLLERS}
+    7 main controllers made which  
+        correspond to the 7 actions of request
+
+        1. index     GET
+        2. show      GET
+        3. new       GET
+        4. create    POST
+        5. edit      GET   
+        6. update    PUT/'PATCH'
+        7. destroy   DELETE
+
+    Multiple if a params hash
+
+        # returning hash parameters
+        for the html to return parameters in a hash
+        <form accept-charset="UTF-8" action="/clients" method="post">
+            <input type="text" name="client[name]" value="Acme" />
+            <input type="text" name="client[phone]" value="12345" />
+            <input type="text" name="client[address][postcode]" value="12345" />
+            <input type="text" name="client[address][city]" value="Carrot City" />
+        </form>
+
+    params[:client] =>  {   "name" => "Acme", 
+                            "phone" => "12345", 
+                            "address" => { 
+                              "postcode" => "12345", 
+                              "city" => "Carrot City" 
+                            } 
+                        }. 
+
+        MUST "white list" 
+
+        def client_params 
+            params.require(:client).permit(:name,:phone,:address)
+        end
+
+        # params hash parameters that have multiple 
+        # parameters need to be permitted
+        FOR SECURITY 
+    
+    Flash 
+        1. flash[:notice]
+            # uses flash message in next request
+            e.g. flash[:notice] = 'Success logging out!'
+
+        2. flash.now[:alert]
+            #uses flash messsage in the same request
+            e.g. flash.now[:error] = 'Input Error!'
+        
+        3. flash.keep
+            # keeps flash message for another request 
+    
+        Extra
+    <%      flash.each do |name, meg|          %>
+    <%=          content_tag :div, msg, class:name     %>
+    <%      end              %>   
+
+        # will display any flash message made into layout
+        # automatically
+
+        Remember! 
+            flash is a HASH called "flash hash" 
+                it puts all flashes into this hash
+                then uses them based on the method!
+
+                1. .now shows on the current rendered screen
+                2. flash goes on the redirect to the next pages
+                    so it stays in the hash until the next pages
+                3. .keep stays in the hash until theres no keep 
+                     i guess 
+
+{VIEWS}
+
+    View partials
+        # common and repetive parts get put into partials
+        # which are injected into other files for reuse
+        
+            To render partial in html forms
+        <%= render :partial 'form' %> 
+            or 
+        <%= render 'form' %>
+
+        partial forms start with underscore
+        e.g. _form.html.erb
+             _user_form.html.erb
+             etc..
+            
+    Passing local Varialbles to partials
+        <%= render "folder/the_partial", 
+            :locals => { :user => user }
+        %> 
+    
+        NOTE: its expected to pass in the variables 
+        we wish to use in partials 
+        -its apparently bad coe to expect an instance
+        variable like @user to be there in the partial 
+        all the time
+
+        - which makes sense i guess, if you want to put
+        other values in the form 
+        i.e. user vs businesses
+            but using the same form for registration!
+
+    Helper method
+        #link_to  
+            - links page to a path
+        
+        1. INSTEAD OF: 
+            <a href= 
+                "<%= user_path %>" 
+            > 
+                "See All Users" 
+            </a>
+
+        2. DO THIS: 
+            <%= link_to "See All Users", users_path %>
+
+    Render actions template
+
+        1. in the current controller 
+            render 'show'
+            render action: 'show'
+                OR 
+            render :show
+            render action: :show
+
+            NOTE: looks in the current controller folder
+        
+        2. in another controller
+            render 'products/show'
+                OR 
+            render template: 'products/show'
+
+            NOTE: looks inside the products controller folder
+            then renders the show template there!
+
+        3. render file in the system 
+            render file: '/path/to/ware_house_app/current/app/views/products/show'
+    
+    Type of render 
+
+        1. :content_type
+                    # use this type when showing the page
+                render file: filename, content_type: 'application/rss'
+
+        2. :layout
+                  # use special_layout for this action
+                render layout: 'special_layout'
+                  # dont use a layout at all 
+                render layout: false
+        3. :location
+                  # use this lcoation for http header
+                render xml: photo, location: photo_url(photo)
+        4. :status
+                  # change default response to:
+                render status: 500
+                render status: :forbidden
+                    i.e. render status: 403
+        5. :formats
+                  # choosing format or error occurs 
+                render formats: :xml
+                    # must be these options
+                redner format: [:json, :xml]
+
+    Choosing Layouts for actions or controller
+        # must put layout 'layoutChoice'
+
+        e.g. 
+        1.  # pick layouts/inventory.html.erb
+            # as the layout for this controller
+            # instead of layouts/application.html.erb
+            class PhotoController << ApplicationController
+                layout 'inventory'
+            end
+        2.  # pick layouts/inventory.html.erb
+            # as the layout for ALL controllers
+            # instead of layouts/application.html.erb
+            class ApplicationController < ActionController::Base
+                layout 'inventory'
+            end 
+
+        3. exception to layout 
+                layout 'inventory', except: [:index, :rss]
+                # the index and rss method would use the 
+                # default application.index.erb layout
+        
+        4. defer the choice of layout until request processed
+            # to defer the layout for a request
+            # must use a symbol 
+            e.g.
+            layout :inventory
+            # then use logic to determine when to use it
+
+            def inventory
+                @current_user.special? ? 'special' : 'product'
+            end
+            # not sure how this works just yet, but im assuming
+            # that because its true it applies to the method 
+            # chosen. if its not true then doesn't apply
+            # IF TRUE WORKS FOR ANY METHOD IN THE CONTROLLER
+
+    Redirect 
+        redirect_to VS redirect_back
+        
+        1. Using the redirect_to     
+            #redirect_to a relative path or url  
+                redirect_to photos_path 
+                    and 
+                redirect_to photos_url 
+
+                #same redirect_to /photos
+                    and 
+                #same redirect_to https://www.example.com/photos
+        
+                    OR 
+                redirect_to edit_photo_path
+                #same redirect /photo/:id/edit 
+
+            # change status code
+            redirect_to photos_path, status: 301
+            default it 302, tempoary
+        2.  redirect back to path just came from 
+             #redirect_back with a fall back path
+                redirect_back(fall_back_location: root_path)
+
+            NOTE: this doesn't always work if the browser
+            doesn't store the previous path in the 
+            HTTP_REFERER header, so there must be 
+            default. Just better to use redirect_to
+
+    Header reponses
+        Find all the numbers or symbols: https://guides.rubyonrails.org/layouts_and_rendering.html#the-status-option
+       
+        1. One header response
+            head :bad_request 
+
+            #same head 400 
+
+        2. Multiple header responses
+
+            head :created, location: photo_path(@photo)
+
+        # unlike redirect_to or render 
+        # header responses sends no body 
+        # meaning it sends no html, or content 
+        # so it only sends back the request status
+        # unless otherwise said like the 
+        # "location: photo_path(@photo)"
+        # that sends in the contents of that path 
+        # with the status code 
+
+    ASSET TAG HELPERS 
+        there are 6 tags
+            top 3 usually in headers 
+        1. link to feeds 
+            *****not sure what that means yet*****
+            
+            three options available for the tags   
+                a. :rel - default 'alternate'
+                b. :type 
+                c. :title 
+
+            auto_discovery_link_tag 
+            e.g. 
+                auto_discovery_link_tag( :rss,
+                        {action: 'feed'}, 
+                        {title: 'RSS Feed'}
+                )
+            something link(in html): 
+            <link rel="alternate" type="application/rss" title="RSS feed" href="http://www.somesite.com/file/rss.php" />
+
+        2. links a javascript file
+
+            javascript_include_link_tag
+            e.g.
+            a.  # include one file 
+                javascript_include_link_tag 'main'
+            b.  # include multiple files
+                javascript_include_link_tag 'main', '/photos/columns'
+
+        3. links a style sheet 
+            2 options to pick for stylesheet
+                rel:    default= 'stylesheet'
+                media:  default= 'media' 
+
+            stylesheet_link_tag
+            e.g. 
+            a.  # include one file
+                stylesheet_link_tag 'main'   
+            b.  # include mutiple 
+                stylesheet_link_tag 'main', 'photos/columns'
+
+        4. link to image file 
+            # MUST specify image extension 
+            # i.e. .png, .jpg
+            
+            options to pick for image 
+                alt:   -alt for black image (description)
+                id:  -tag id of choice
+                class:  -class tag of choice
+                size:50x20 {widthxheight} - image size of choice
+            image_tag
+            e.g. 
+                # added hash of html options 
+                image_tag 'header.png', {height: 45}
+                # not add hash 
+                image_tag 'header.png', alt: 'Go home', id: 'HomeImage', class: 'nav_bar'
+        
+        5. link to video_tag
+            options for video tags
+                all image tag options ^ 
+                poster: 'image_name.png', provides image to put in place of video before it starts (thumbnail)
+                autoplay: true/false, starts playing on page load 
+                loop: true/false, loops video once it gets to the end
+                controls: true/false, provides browser supplied controls for user to interact with video
+                autobuffer: true/false, video  will preload the file for user on pageload
+
+            video_tag 
+            e.g. 
+                video_tag 'movie.ogg' 
+                #html like
+                <video src= '/videos/movie.ogg' />
+                
+                # tag multiple videos (playlist?)
+                video_tag ['trailer.ogg', 'movie.ogg']
+
+                html like:   (seems like a playlist to me)
+                <video> 
+                    <source src='/video/trailer.ogg'>
+                    <source src='/video/movie.ogg'>
+                </video>
+
+        6. link to audio tags
+            options for tag
+            class:
+            id:
+            autoplay: true/false, starts playing audio on page load
+            controls: true/false, browser supplied controls for user interaction
+            autobuffer: true/false, auto preloads on pageload
+            
+            audio_tag
+            e.g. 
+                audio_tag 'music.mp3' 
+
+    USING YIELD IN THE LAYOUTS 
+        named yields VS unamed yields 
+
+        1. unname yields 
+            -always renders body of the views
+            # like any normal yield
+            <html>
+                <head>
+                </head>
+                <body>
+                    <%= yield %>
+                </body>
+            </html>
+
+        2. name yields 
+            # allows multiple yields in one layout 
+
+            html>
+                <head>
+                    <%= yield :head %>
+                </head>
+                <body>
+                    <%= yield %>
+                </body>
+            </html>
+
+            using content_for method 
+            # can insert into name yield while body
+            # goes into unamed yield
+            e.g. 
+            # the title goes into name yield :head ^ IN HEAD TAG 
+            <% content_for :head do %>
+                <title>A simple page</title>
+            <% end %>
+            
+            # unamed yield gets rest of content IN BODY TAG
+            <p>Hello, Rails!</p>
+
+    PARTIALS 
+        render partial 
+
+        user render in view template (knew about this)     
+        <%= render 'partial' %>
+        don't have to put the underscore
+    

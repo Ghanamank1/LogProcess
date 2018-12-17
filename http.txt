@@ -2,6 +2,8 @@ Hypertext Transfer Protocol
 
 details- https://code.tutsplus.com/tutorials/http-the-protocol-every-web-developer-must-know-part-1--net-31177
 
+HTTP VERBS: GET | PUT/PATCH | DELETE | POST
+
 Status code 
     200s - successful
     300s - redirection
