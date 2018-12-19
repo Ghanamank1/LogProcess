@@ -4,6 +4,8 @@ details- https://code.tutsplus.com/tutorials/http-the-protocol-every-web-develop
 
 HTTP VERBS: GET | PUT/PATCH | DELETE | POST
 
+Request-Line = Method SP URI SP HTTP-Version CRLF
+
 Status code 
     200s - successful
     300s - redirection

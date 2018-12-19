@@ -6,7 +6,8 @@
                 e.g. rails generate controller StaticPages home help
         - rails generate model ModelName colname:datatype colname:datatype
                 e.g. rails generate model User name:string email:string 
-        
+        - rails generate migration NameTheMigration
+
         (to reverse generated model or controller)
     rails destroy 
         - rails destroy controller ControllerName method1 method2
@@ -14,22 +15,6 @@
         -rails destroy model ModelName
                 e.g. rails destroy User 
                     NOTE: ONLY model can omit arguments
-
-{DATABASE MIGRATIONS}
-
-        (migrating model info to database)
-    rails db:migrate 
-        - migrating to database
-
-        (to undo a single migration)
-    rails db:rollback
-        - i think the most recent migration will be undone
-
-        (to rollback to the beginning)
-    rails db:rollback VERSION=0    
-        - to undo all migrations to the database 
-        - TOTAL RESET 
-        NOTE: putting 1,2,etc in VERSION migrates to that VERSION
 
 {RAILS SERVER}
 
@@ -709,4 +694,804 @@ stopped 3.13
         user render in view template (knew about this)     
         <%= render 'partial' %>
         don't have to put the underscore
+
+{ASSET PIPELINE}
+
+    -Asset pipeline compresses files so they run all at onces
+     when users call the site 
+     i.e. javascript, css, etc. files 
+
+    SUMMARY (based on what ive gathered)
+    # purpose of this pipe line is to combine the multiple files
+    # in the application into one massive file to make it faster
+    # in production so there are no multiple page loads, just one.
+    # by using the "sprocket" gem, it uses the minifest files to 
+    # gather all the pages into the main file to launch into 
+    # production
+    # files in app/asset, lib/assets and vendor/asset all come
+    # to one location to get launched into prodution minifest 
+    # files 
+     read again: 
+     https://guides.rubyonrails.org/asset_pipeline.html
+
+     ** i don't have a complete understanding just yet** 
     
+{TESTING}
+    test_helper in rails 
+
+    Commands
+        1. get "path"
+        2. assert_templete 'path/to/directory/file'
+            relative to the view folder
+        3. assert_select 
+                selects elements in the html 
+            e.g. assert_select "a[href=?]", root_path, count:2
+                 OR 
+                 assert_select "title", "Help | Ruby on Rails .."
+            1. inserts root path in "?" to select the link
+            2. checks the page of 2 links of the selected link
+               with "count"  
+        4. assert_response 
+            - checks the status code of the reponse header 
+                of the page incoming
+            e.g. assert_response :success
+                    or 
+                 assert_response 200
+                 # check guide for all the response symbols
+
+        Options for assert_select
+            Code                                       Matching html 
+        assert_select "div"	                        <div>foobar</div>
+        assert_select "div", "foobar"	            <div>foobar</div>
+        assert_select "div.nav"	                    <div class="nav">foobar</div>
+        assert_select "div#profile"	                <div id="profile">foobar</div>
+        assert_select "div[name=yo]"	            <div name="yo">hey</div>
+        assert_select "a[href=?]", '/', count: 1	<a href="/">foo</a>
+        assert_select "a[href=?]", '/', text: "foo"	<a href="/">foo</a>
+
+{DATABASE MIGRATIONS}
+
+        (migrating model info to database)
+    rails db:migrate 
+        - migrating to database
+
+        (to undo a single migration)
+    rails db:rollback
+        - the most recent migration will be undone
+        e.g. migrated and created 4 new collumns but forgot 
+            to add the user email. you can just db:rollback
+
+        (to rollback to the beginning)
+    rails db:rollback VERSION=0    
+        - to undo all migrations to the database 
+        - TOTAL RESET 
+        NOTE: putting 1,2,etc in VERSION migrates to that VERSION
+        e.g. to roll back to specific version 
+
+        rails db:migrate VERSION=20080906120304 
+
+        reails db:rollback STEP=3
+
+            NOTE:  number is the prefix of migration file
+            i.e. 20080906120304_create_product_table.rb
+            i.e. 3 is number of migrations to roll back
+    rails db:migrate RAILS_ENV=test 
+        #run test in specific environment
+
+{MODELS}
+    Active record
+        Validations Active Record 
+        # validates model state before saving to data base
+        # state of object is validated before entering database
+
+            # checks if the entry fits the constraint
+                validates :name, presence: true
+            e.g. 
+                # name can't be null
+                class User < ApplicationRecord
+                    validates :name, presence: true
+                end
+
+        valid? VS invalid? 
+                # checks if it passes validation
+                .messages checks output 
+                e.g. 
+               1. User.create(name: "John").valid? => true
+               2. User.create(name: nil).valid => false 
+                # 2 wont save/persist in the database
+                # 1 will 
+
+            NOTE: .update and .save 
+                # when putting data on the database goes through to
+                # check for the validated parameter
+                will return error if it has the ! called the bang
+                i.e. "!"
+                create!
+                update!
+                save! => ActiveRecord::RecordInvalid: Validation failed: name can't be blank
+        
+        .new_record? 
+            checks if entry is already in database 
+            end returns true or false 
+            Person.new(name: "John").new_record? => true
+            after .save, this will be false
+
+        errors Validation errors 
+            base message
+                # adds to any error
+                errors[:base] << "error message"
+
+            .errors[] VS .errors.details[]
+            errors array
+            1.      Person.new.errors[:name].any? => false
+                # checks if there are errors with the 
+                # instance of the person object or not 
+                # in this canse there isn't 
+
+                Person.new.errors.full_messages 
+                # same thing (all errors tho not just name)
+
+            2.      Person.errors.details[:name] => [{error: :blank}]
+                # if theres an error, it gets the details of that 
+                # error 
+
+            3.      errors.add()
+                e.g.
+                class Person < ApplicationRecord
+                    errors.add(:name, "cannot contain the characters !@#%*()_-+=")
+                        OR another way
+                    errors.add(:name, :invalid_characters, not_allowed: "!@#%*()_-+=")
+                end
+
+                person = Person.create(name: "!@#")
+ 
+                person.errors[:name]
+                # => ["cannot contain the characters !@#%*()_-+="]
+                
+                person.errors.full_messages
+                # => ["Name cannot contain the characters !@#%*()_-+="]
+        
+
+        Validation Helpers
+            guide: https://guides.rubyonrails.org/active_record_validations.html 
+
+            1. acceptance
+            2. validates_associated
+            3. confirmation
+            4. exclusion
+            5. format
+            6. inclusion 
+            7. length
+            8. numericality
+            9. presence
+            10. absence
+            11. uniqueness
+            12. validates_with
+            13. validates_each
+
+            1. acceptance 
+                # used for checkbox on UI was checked 
+
+                a. must be checked to move on 
+                    e.g. 
+                    validates :terms_of_service, acceptance: true 
+                
+                b. message
+                    #is not nil sends a message if nil does not 
+                    e.g.
+                    validates :terms_of_service, acceptance: {message: 'must be abided'}
+
+                c. accept
+                    # specifies what constitutes as accept
+                        # must get a yes to validate acceptance
+                    validates :terms_of_service, acceptance: {accept: 'yes'}
+
+                        # if acceptance field is in database 
+                        # must put true in field
+                        e.g.
+                    validates :terms_of_service: {accept: ['TRUE', 'accepted']}
+
+            2. validates_associated 
+                    # if model has association it also validates them
+                    i.e. if something belongs to the model 
+                         and needs validation 
+
+                    e.g. 
+                        # validates all the books before
+                        # creating the library
+                        # persisting to the database
+
+                        class Library < ApplicationRecord 
+                            has_many :books
+                            validates_associated :books
+                        end
+
+            3. confirmation
+                    # validates that the entry matches confirmation field
+
+                    a. #validate that email matches _confirmation field
+                      validates :email, confirmation: true
+                    
+                      checks the :email_confirmation field
+
+                        possible view templates 
+                            (I THINK!)
+                            :person in value of the view also class/model
+                            :email is in place of the name also column
+                        
+                        <%= text_field :person, :email %>
+                        <%= text_field :person, :email_confirmation %>
+
+                    b. remove case sensitivity
+                        #default is true
+                        ,confirmation: {case_sensitive: false}
+
+            4. exclusion
+                    # picks specific values that wont be 
+                    # allowed when validating the input
+
+                    e.g. validates :subdomain, exclusion: { in: %w(www us ca jp)
+                            message: "%{value} is reserved" }
+            5. format 
+                    # checks for specific values in entry
+
+                    # all entries must be letters
+                    e.g.
+                    validates :legacy_code, format: {with: /\A[a-zA-Z]+\z/,
+                                message: "only allows letters" }
+
+            6. inclusion
+                    #opposite of exclusion 
+
+                    # picks specific values that will be allowed when 
+                    # validating the input
+
+                    e.g. validates :size, inclusion: { in: %w(small medium large),
+                            message: "%{value} is not a valid size" } 
+
+            7. length 
+                    validates :bio, length: {maximum: 2}
+                    validates :bio, length: { maximum: 500 }
+                    validates :password, length: { in: 6..20 }
+                    validates :registration_number, length: { is: 6 }
+                    
+                    e.g. example of error message
+                    validates :bio, length: {maximum: 1000,
+                        too_long: "%{count} characters is max allowed}
+
+                    # checks character length of entry
+                        
+                        options Constraints
+                        :minimum       - given min
+                        :maximum       - given max
+                        :in or :within - given a range
+                        :is            - picking exact length
+                    
+                        Error option
+                        :too_long   - when max is given
+                        :too_sort   - when min is given
+                        :wrong_length   -either max or min
+                
+            8. numericality 
+                # checks if all entry values are numbers
+                
+                e.g. 
+                # checks if number but with one space for character
+                # in the front, i think for money i.e. $5000.00
+                validates :point, numericality: true
+
+                # checks for only number integer 
+                validates :point, numericality: {only_integer: true}
+
+                    option Constraints
+                    :greater_than              - >
+                    :greater_than_or_equal_to  - >=
+                    :equal_to                  - ==
+                    :less_than                 - <
+                    :less_than_or_equal_to     - <=
+                    :other_than                -must be any other
+                    :odd                       -must be odd number
+                    :even                      -must be even number
+                    :allow_nil                 -allow nil values 
+                    
+                    NOTE: numericality doesn't allow nil values by 
+                    default
+                
+            9. presence
+                    # checks if entry exists and not nil/empty
+                    
+                    e.g. 
+                    # checking multiple entries
+                    validates :name, :login, :email, presence: true
+
+                    # validates associated records who presence are required
+                    class Order < ApplicationRecord
+                        has_many :line_items, inverse_of: order
+                    end
+                        # has many so that means line_items belong to 
+                        order
+                        i guess it validates in they are there
+
+            10. absence
+                    # checks if entry is absent or not there 
+                    # must be whitespace or empty string
+
+                        same methods as presence accept absence is there
+
+            11. uniqueness 
+                    #makes sure that entry is unique in database
+
+                    e.g.
+                    a.  # makes sure given entry is unique
+                        # by searching entire database for it 
+                        
+                        validates :email, uniqueness: true
+
+                    b.  # place a constraint on the search 
+                        :scope
+                            # checks based on year only not all columns
+                        
+                        class Holiday < ApplicationRecord
+                            validates :name, uniqueness: {scope: :year,
+                                message: "should happen once per year"}
+                        end 
+                        NOTE: in this case it is looking at holidays
+                        which would have a name that is ALWAYS associated
+                        with a specific date of the year
+                            # so it seems to look at names based on year
+                            like 2010 checks the names, 2011 checks, etc.
+                    
+                    c.  change case sensitivity
+
+                        # the search is not case sensitive
+                    validates :name, uniqueness: { case_sensitive: false}
+
+            12. validates_with
+                        -validates with another model
+                    # look at guide for details 
+
+            13. validates_each 
+                        - validates mutiple parameter
+                        using a block
+                     #look at guide for details 
+            
+        raising validation failed message
+
+            strict
+                e.g.
+                validates :name, presence: {strict: true}
+                if valid, no message
+                if not => ActiveModel::StrictValidationFailed: Name can't be blank
+
+        CONDITIONAL Validations
+            (guid is at the beginning of validation section)
+            :if 
+                can use a Proc wit these
+                # check guide on if statement for validation
+            
+            :unless 
+                # check guide 
+                can even use a block
+
+            with_options
+                allows the validation of multiple parameters
+                e.g. 
+
+                with_options if: :is_admin? do |admin|
+                    admin.validates :password, length: { minimum: 10 }
+                    admin.validates :email, presence: true
+                end
+
+        Validated methods (one that persist to the database)
+         # some methods skip validation 
+         # others do not skipp validation 
+
+        1. Doesn't skip 
+                create
+                create!
+                save
+                save!
+                update
+                update!
+        
+        2. Skips Validation (user with caution)
+                decrement!
+                decrement_counter
+                increment!
+                increment_counter
+                toggle!
+                touch
+                update_all
+                update_attribute
+                update_column
+                update_columns
+                update_counters
+                .save(validate: false)
+         
+    Seed data 
+        # i guess literally "seeding" the database data
+        - can use use the file to set up initial data 
+        - when data base is created  
+        # setting up the database of a black application 
+        # in a "clean" way 
+            # user before database setup 
+                run= rails db:seed 
+        # create 5 rows of data right adter the database creation
+        e.g. 
+            5.times do |i|
+                Product.create(name: "Product ##{i}", 
+                    description: "A product. ")
+            end 
+    
+    Looking at old Migrations    
+        db:migrate:status
+
+        # allows you to view deleted files
+        # and current file 
+        # has up, down notation
+
+    CRUD Database
+        1. Create 
+            -creating values inside database rows
+            a. Create data with a hash/without hash
+                .create VS .new
+                user = User.create(name: "David", occupation: "Code Artist")
+                    OR  
+                user = User.new(name: "David", occupation: "Code Artist")
+                user.save 
+                    OR 
+                user = User.new
+                user.name = "David"
+                user.occupation = "Code Artist" 
+                user.save 
+                NOTE: using .new requires .save to commit to database
+            b. using a block
+                user = User.new do |u|
+                        u.name = "David"
+                        u.occupation = "Code Artist"
+                       end 
+                user.save
+                    OR 
+                user = User.create do |u|
+                        u.name = "David"
+                        u.occupation = "Code Artist"
+                       end 
+                
+                Analogous SQL
+                INSERT INTO users (name, occupation) 
+                VALUES ("David", "Code Artist");
+
+        2. Read 
+            - retriving/ reading database information
+            # return collection of all user objects
+                users = User.all
+
+            # return first user
+                users = User.first
+
+            # return last user 
+                users = User.last
+            
+            # return first user name David
+                david = User.find_by(name: 'David')
+
+            # return users named David who are Code Artists
+            # and sort by created_at in reverse chronological order
+                users = User.where(name: 'David', occupation: 'Code Artist'
+                        ).order(created_at: :desc)
+                        
+                        Analogous is SQL (I think)
+                        SELECT * FROM users 
+                        WHERE name= 'David' 
+                        AND occupation= 'Code Artist'
+                        ORDER BY created_at DESC;
+        
+        3. Update 
+            - changing data in the data base
+
+            # find first 'David's and change all 'David's to 'Dave'
+                user = User.find_by(name: 'David')
+                user.name = 'Dave'
+                user.save
+
+                NOTE: find_by requires .save like .new method
+                    OR 
+
+                user = User.find_by(name: 'David')
+                user.update(name: 'Dave')
+
+            # updating in bulk
+                User.update_all 'max_login_attempts = 3, must_change_password = "true" '
+
+        4. Delete 
+                - deleting values from the database row!
+
+                # destroy user with name david (first)
+                    user = User.find_by(name: 'David')
+                    user.destroy 
+                
+                # delete all users name David
+                    User.where(name: 'David').destroy_all
+
+                # delete all users   (which i will never use)
+                    USer.destroy_all
+    
+    Migrations
+        
+        # MIGRATIONS used to CUD tables
+        # ALTER TABLE in SQL
+        # the R - red is performed by the controller/model
+        # since that is data retrieval
+
+        Creating Standalone migration 
+            # usually do this when you want to
+            # do something after table is already made  
+            1. Add column 
+                AddColumnToTable
+                AddXXXToXXX
+                    i.e.
+                    rails generate migration AddPartNumberToProducts part_number:string
+                    generates
+                     class AddPartNumberToProducts < ActiveRecord::Migration[5.9]
+                        def change
+                            add_column :products, :part_number, :string
+                        end
+                     end
+            2. Remove column 
+                RemoveColumnFromTable 
+                RemoveXXXFromXXX
+                    i.e. (can add multiple columns)
+                    rails generate migration RemovePartNumberFromProducts part_number:string
+                    class RemovePartNumberFromProducts < Active...
+                        def change
+                            remove_column :products, :part_number, :string
+                        end
+                    end
+            3. Create table 
+                CreateTable
+                CreateXXX
+                    i.e. (creates table)
+                    rails generate migration CreateProducts name:string part_number:string
+                    class CreateProducts < ActiveRecord::Migration[5.0]
+                        def change
+                            create_table :products do |t|
+                                t.string :name
+                                t.string :part_number
+                            end
+                        end
+                    end
+
+            4. DO it one statement
+                    change_table 
+
+                    i.e. 
+                    
+                    change_table :products do |t|
+                        t.remove :description, :name
+                        t.string :part_number
+                        t.index :part_number
+                        t.rename :upccode, :upc_code
+                    end
+                    - remove description and name column
+                    - creates part_number string collumn
+                    - add an index on part_number column
+                    - renames the upccode column
+        
+        Column Modifiers
+            i.e. 
+                add_column :products, :price, :decimal, precision: 5, scale: 2
+                add_reference :products, :supplier, polymorphic: true
+            
+            limit       - Sets the maximum size of the string/text/binary/integer fields.
+            precision   - Defines the precision for the decimal fields, representing the total number of digits in the number.
+            scale       - Defines the scale for the decimal fields, representing the number of digits after the decimal point.
+            polymorphic - Adds a type column for belongs_to associations.
+            null        - Allows or disallows NULL values in the column.
+            default     - Allows to set a default value on the column. Note that if you are using a dynamic value (such as a date), the default will only be calculated the first time (i.e. on the date the migration is applied).
+            index       - Adds an index for the column.
+            comment     - Adds a comment for the column.
+
+    Migration Methods / Commands 
+        1. change
+            allows for both the up and down functionality
+            - changed from up (adding/migrating to data base)
+            - down (Removing/ reversing migration)
+                e.g. 
+                    def change
+                        create_table :distributors do |t|
+                            t.string :zipcode 
+                        end
+                    end
+
+        2. execute
+            - allows the input of direct sql in migration file
+                e.g. 
+                    def up 
+                        execute <<-SQL
+                            ALTER TABLE distributors
+                                ADD CONSTRAINT zipchk
+                                    CHECK (char_length(zipcode) = 5) NO INHERIT;
+                        SQL
+                    end
+
+        3. reversible
+                - if active recored doesn't know how to 
+                reverse something 
+                - you tell it how to implement and reverse it
+                
+                reversible do |dir|
+                    # how to migrate the database
+                    dir.up do
+                        code to migrate (can be straight sql)
+                    end
+                    # how to reverse with a rollback or revert
+                    dir.down do
+                        code to reverse (can be straight sql)
+                    end
+                end
+
+                e.g. 
+                    class ExampleMigration < ActiveRecord::Migration[5.0]
+                        def change
+                            create_table :distributors do |t|
+                            t.string :zipcode
+                            end
+                        
+                            reversible do |dir|
+                            dir.up do
+                                # add a CHECK constraint
+                                execute <<-SQL
+                                ALTER TABLE distributors
+                                    ADD CONSTRAINT zipchk
+                                    CHECK (char_length(zipcode) = 5) NO INHERIT;
+                                SQL
+                            end
+                            dir.down do
+                                execute <<-SQL
+                                ALTER TABLE distributors
+                                    DROP CONSTRAINT zipchk
+                                SQL
+                            end
+                            end
+                        
+                            add_column :users, :home_page_url, :string
+                            rename_column :users, :email, :email_address
+                        end
+                    end
+        4. up VS down
+            (old style of migration)
+            -UP transforms schema 
+            -DOWN revert change to schema
+                
+                def up
+                # add code to migrate 
+                end
+                
+                def down
+                # add code to reverse ups migration
+                end 
+
+            e.g. 
+                def up
+                    create_table :distributors do |t|      
+                    t.string :zipcode
+                    end
+                
+                    # add a CHECK constraint
+                    execute <<-SQL
+                    ALTER TABLE distributors
+                        ADD CONSTRAINT zipchk
+                        CHECK (char_length(zipcode) = 5);
+                    SQL
+                
+                    add_column :users, :home_page_url, :string
+                    rename_column :users, :email, :email_address
+                end
+                    1. create distributors table: with "zipcode" column
+                    2. added constraint name "zipchk" to distributors table
+                    3. added home_page_url column TO users table 
+                    4. renamed email column in users table to email_address
+
+                # should raise error message if someone tries to revert with down
+                def down
+                    rename_column :users, :email_address, :email
+                    remove_column :users, :home_page_url
+                
+                    execute <<-SQL
+                    ALTER TABLE distributors
+                        DROP CONSTRAINT zipchk
+                    SQL
+                
+                    drop_table :distributors
+                end
+                    # did the exact opposite (reverse order)
+                    1. renamed email_address column in user back to email 
+                    2. removed home_page_url column FROM users table 
+                    3. removed constraint name "zipchk" FROM distributors table
+                    4. dropped/ deleted distributors table
+
+        6. revert 
+                # used to rollback migrations
+                
+                revert "NameOfMigration"
+
+                e.g. 
+                def change 
+                    revert CreateProductTableMigration
+                end 
+                #look back at guide for more details
+
+    Associations
+        Model relationships (6)
+        1. has_many
+            have pluralized terms/class name
+                class Author < ApplicationRecord
+                    has_many :books
+                end
+        2. has_one
+            must have singular terms/class name
+                class Book < ApplicationRecord
+                    has_one :author
+                end
+        3. belongs_to
+            must have singular terms/class name
+                class Book < ApplicationRecord
+                    belongs_to :author
+                end
+        4. has_and_belongs_to_many
+            must have plural terms/class names 
+                class Assembly < ApplicationRecord
+                    has_and_belongs_to_many :parts
+                end
+                
+                class Part < ApplicationRecord
+                    has_and_belongs_to_many :assemblies
+                end
+        5. has_many :through
+            must have pluralization when after :through
+                    e.g. 
+                    class Physician < ApplicationRecord
+                        has_many :appointments
+                        has_many :patients, through: :appointments
+                    end
+                    
+                    class Appointment < ApplicationRecord
+                        belongs_to :physician
+                        belongs_to :patient
+                    end
+                    
+                    class Patient < ApplicationRecord
+                        has_many :appointments
+                        has_many :physicians, through: :appointments
+                    end
+        6. has_one :through
+            all singular because its has_one and belongs_to
+                e.g.
+                class Supplier < ApplicationRecord
+                    has_one :account
+                    has_one :account_history, through: :account
+                end
+                
+                class Account < ApplicationRecord
+                    belongs_to :supplier
+                    has_one :account_history
+                end
+                
+                class AccountHistory < ApplicationRecord
+                    belongs_to :account
+                end
+
+
+
+
+
+
+*********************************************
+SEND EMAIL TO PHILLAPINO PERSON IN AMERICA
+***********************************************
+look back at 3.2 creating join table if it becomes apparent
+that its needed
+
+go through sql and write some 
+stuff of that knowledge
+creatae sql.txt file in logprogress
