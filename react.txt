@@ -1,0 +1,146 @@
+Types of components
+    - function component 
+        have to create props
+
+        a. High order component
+            - functional component that wraps another component
+            (give the wrapped component extra props)
+    - class component 
+        - automatically comes with PROPS
+
+LINK VS NAVLINK
+
+    LINK puts the anchor tag <a> 
+    NAVLINK puts the anchor and active class for the link in action
+
+
+<Switch>
+
+    wraps around <Route> tags and make links match to 
+    only one route at a time.
+    (without the tag, the router matchs multiple routes)
+
+images 
+    must import the image file 
+        e.g.
+        import Pokeball from '../pathToFile'
+
+Redirecting 
+    (moving a user to another page)
+
+    - it uses the history on the props object and pushes to the path
+        (uses the push function)
+
+    this.props.history.push('/')
+    
+{REDUX}
+    State management 
+        -central data store 
+
+    1. component subscribes to redux store for changes to data (props)
+        - send the data in form of props
+    2. send Dispatch action to update the data 
+        e.g. add post, delete post, etc 
+    3. data is sent to REDUCERS 
+        - reducers update the state in redux store 
+
+
+        (DEALING WITH REACT STORES)
+            1. CREATE STORE 
+            2. pass the store a reducer fuction
+                (so the store knows which reducer its working with)
+                    for what ever action
+            3. pass the reducer 2 parameters
+                -pass it the state and action
+            4. create the initial state 
+                -since there will be no state in the store initialy
+            5. create an action to pass into the reducer 
+                - the action is simply a javascript object
+                - MUST ADD  a type property 
+                    describes what the object does 
+                - then has optional load of data 
+            6. dispatch the funtion
+                - sends the info to the reducer
+            7. add if statements to the reducer for the different types of actions
+                (the update of the state, should not be distructive)
+                    which is why there is a spead ... method 
+                    rather than a push => state.todos.push(action.todo)
+
+            8. subscribe to the store 
+                - when the state changes, the component will then REACT
+                    (it will likely render the new info to the front)
+
+                1. must use the store.subscribe() function
+                    -which takes a function as a parameter 
+                2. must make sure to spread the entire state into the the reducer
+                    - this ensure that the other parameters are still in the 
+                        store and not only the new one
+                        DOES NOT WORK THE SAME AS SETSTATE in a component
+
+            9. connect the component(s) to the store 
+            with the connect function 
+                e.g. 
+                    import {connect} from 'react-redux'
+
+                    export default connect(mapStateToPropsFuntion)(ConnectingComponentName)  
+
+            10. must map the data of the store to the component
+                1. create a mapStateToProps function
+                 (which returns an object of the state)
+                2. then use it in the components with the props
+                3. pass the mapping function into the conncet function
+                    (so react knows what we want from the state)
+
+                import { createStore } from 'redux';
+                import { Provider } form 'react-redux'; - wraps the main app root
+
+                const {createStore} = Redux;
+
+                const initState = {
+                    todos: [],
+                    posts: []
+                }
+        
+                function myreducer(state= initState, action) {
+                    if (action.type == 'ADD_TODO') {
+                        return {
+                            ...state,
+                            todos: [...state.todos, action.todo]
+                        }
+                    }
+                }
+
+                const store = createStore(myreducer)
+
+                store.subscribe(() => {
+                    console.log('state updated');
+                    console.log(store.getState());
+                })
+                const todoAction = { 
+                    type: 'ADD_TODO',
+                    todo: 'buy milk'
+                }
+    
+                store.dispatch(todoAction)
+    
+    middleware 
+        redux-thunk
+        - used to pause the dispatch of actions to make a request 
+            to the back end, then complete the process of updating 
+            state
+
+        - stop the process in the MIDDLE? 
+            TO USE THUNK
+        1. import applyMiddleware from redux library
+        2. import thunk from 'redux-thunk' library
+        3. add the applyMiddleware(thunk) to the store
+
+    connect (used to connec to redux)
+        import { connect } from 'redux-react 
+
+        connect high order component accepts multiple parameters
+
+        export default connect(
+            mapStateToProps,
+            mapDispatchToProps,
+        ) (ComponentThatConnectsToRedux)

@@ -1,0 +1,30 @@
+1. starting the postgres service 
+    service postgresql start 
+2. stopping the postgres service 
+    service postgresql stop 
+3. log into postgres user 
+    su - postgres
+4. to get a new prompt 
+    (basically when you are in postgress)
+    psql 
+5. leaving postgres 
+    \q
+    exit 
+6. to log into postgres server 
+    sudo -u postgres psql 
+    
+    a. list databases
+        \l
+    b. list database commands 
+        \h
+    c. current connected database (checking/moving)
+        \c or \connect
+        \c databaseName
+    d. display all tables (in each database)
+        \dt
+    e. listing datatypes 
+        \dT (for short summary)
+        \dT+ (verbose version)
+    f. display users 
+        \du
+    
